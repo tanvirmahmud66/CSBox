@@ -21,15 +21,14 @@ def signin(request):
             user_model = User.objects.get(username=username)
             if user_model:
                 verify_model = Verification.objects.get(user=user_model)
-                if verify_model.is_verified:
-                    if verify_model.is_teacher:
-                        user = authenticate(username=username, password=password)
-                        if user is not None:
-                            login(request, user)
-                            print("user logged In")
-                        else:
-                            messages.info(request, invalid)
-                            return redirect('signin')
+                if verify_model.is_verified and verify_model.is_teacher:
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        print("user logged In")
+                    else:
+                        messages.info(request, invalid)
+                        return redirect('signin')
                 else:
                     return render(request, 'signin.html', {
                         "notification": True,
@@ -66,7 +65,7 @@ def teacher_registration(request):
                 messages.info(request, 'This teacher id already used')
                 return redirect('teacher_registration')
             else:
-                new_user = User.objects.create(
+                new_user = User.objects.create_user(
                     first_name = first_name,
                     last_name = last_name, 
                     username=username, 
@@ -96,8 +95,10 @@ def teacher_registration(request):
                     recipient_list,
                     fail_silently=False
                 )
+
                 return render(request,'notification.html', {
-                    "notification": "We have send an email to your email address for verify your registration process. Please check your email address."
+                    "title": "Confirm Your Email",
+                    "notification": "We have send an email to your email address for verify your registration process. Please check your email address.",
                 })
         # elif password[0]=="-" and confirm_password[0]=="-":
         #     messages.info(request, "Invalid Password")
@@ -126,10 +127,10 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
         department=department
     )
     new_teacher_profile.save()
-    return render(request, 'signin.html', {
-        "notification": True,
-        "success": True,
-        "value": "Your email is verified, Please login again."
+    return render(request, 'notification.html', {
+        "title": "Email Confirmed",
+        "notification": "Your email is verified. Please", 
+        "login": True
     })
 
 

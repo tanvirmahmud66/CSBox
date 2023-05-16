@@ -15,9 +15,9 @@
 {%block content%}
     <div class="wraper">
         <div class="signin-form">
-            <h2>Confirm Your Email Address</h2>
+            <h2>{{title}}</h2>
             <div class="notification">
-                <p>{{notification}}</p>
+                <p>{{notification}} {%if login%}<a href="{%url 'signin'%}">Sign In</a>{%endif%}</p>
             </div>
         </div>
     </div>
