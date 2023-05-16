@@ -13,11 +13,10 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 #======================================================== Sign In
 def signin(request):
-    if request.mothod=="POST":
+    if request.method=="POST":
         username = request.POST["username"]
         password = request.POST["password"]
         invalid = "Invalid username of password"
-        
         try:
             user_model = User.objects.get(username=username)
             if user_model:
@@ -27,27 +26,19 @@ def signin(request):
                         user = authenticate(username=username, password=password)
                         if user is not None:
                             login(request, user)
-                            return HttpResponse("Teacher_Logged In")
-                        else:
-                            messages.info(request, invalid)
-                            return redirect('signin')
-                    elif verify_model.is_student:
-                        user = authenticate(username=username, password=password)
-                        if user is not None:
-                            login(request, user)
-                            return HttpResponse("Student_Logged In")
+                            print("user logged In")
                         else:
                             messages.info(request, invalid)
                             return redirect('signin')
                 else:
-                    messages.info(request, "User is not verified yet, check your email for verification.")
-                    return redirect('signin')
-            else:
-                messages.info(request, "User not found")
-                return redirect('signin')
+                    return render(request, 'signin.html', {
+                        "notification": True,
+                        "warning": True, 
+                        "value": "Your Account not verified Yet. Please check your email for verification."
+                    })
         except Exception as e:
             print(e)
-            messages.info(request, invalid)
+            messages.info(request, "User Not Found!")
             return redirect('signin')
     return render(request, 'signin.html')
 
@@ -137,6 +128,7 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
     new_teacher_profile.save()
     return render(request, 'signin.html', {
         "notification": True,
+        "success": True,
         "value": "Your email is verified, Please login again."
     })
 

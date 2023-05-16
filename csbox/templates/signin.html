@@ -17,13 +17,26 @@
     <div class="hero-section">
         <div class="signin-form">
             {%if notification%}
-                <div class="notification">
-                     <p>{{value}}</p>
-                </div>
+                {%if warning%}
+                    <div class="notificationYellow">
+                        <p>{{value}}</p>
+                    </div>
+                {%elif success%}
+                    <div class="notificationGreen">
+                        <p>{{value}}</p>
+                    </div>
+                {%endif%}
             {%endif%}
             <h2>Sign In</h2>
             <form method="POST">
                 {%csrf_token%}
+                {%if messages%}
+                    <div class="message">
+                        {%for each in messages%}
+                            <p>{{each}}</p>
+                        {%endfor%}
+                    </div>
+                {%endif%}
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
         
