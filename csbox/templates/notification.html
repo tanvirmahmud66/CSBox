@@ -1,0 +1,24 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    Faculty-Registration | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/notification.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    <div class="wraper">
+        <div class="signin-form">
+            <h2>Confirm Your Email Address</h2>
+            <div class="notification">
+                <p>{{notification}}</p>
+            </div>
+        </div>
+    </div>
+{%endblock content%}

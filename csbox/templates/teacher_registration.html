@@ -1,0 +1,57 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    Faculty-Registration | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/teacher_registration.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    <div class="wraper">
+        <div class="signin-form">
+            <h2>Faculty Membership</h2>
+            <form method="POST">
+                {%csrf_token%}
+                {%if messages%}
+                    <div class="message">
+                        {%for each in messages%}
+                            <p>{{each}}</p>
+                        {%endfor%}
+                    </div>
+                {%endif%}
+                <div class="double">
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+                </div>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <div class="double">
+                    <input type="text" id="username" name="username" placeholder="Choose Username" required>
+                    <input type="text" id="teacher_id" name="teacher_id" placeholder="Teacher ID" required>
+                </div>
+                <input type="text" id="designation" name="designation" placeholder="Designation" required>
+                    
+                <select name="department" id="department"  required>
+                    <option value="" disabled selected>Department</option>
+                    {%for department in departments%}
+                    <option value="{{department}}">{{department}}</option>
+                    {%endfor%}
+                </select>
+
+                <div class="double">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+                </div>
+                <div class="double">
+                    <input type="submit" value="Confirm Registration">
+                    <a href="{%url 'signin'%}">Already have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{%endblock content%}

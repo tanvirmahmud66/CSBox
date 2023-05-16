@@ -1,0 +1,49 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    Sign In | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/signin.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    
+    <div class="hero-section">
+        <div class="signin-form">
+            {%if notification%}
+                <div class="notification">
+                     <p>{{value}}</p>
+                </div>
+            {%endif%}
+            <h2>Sign In</h2>
+            <form method="POST">
+                {%csrf_token%}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+        
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+        
+                <input type="submit" value="Login">
+        
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </form>
+        </div>
+        <div class="about-csbox">
+            
+            <div class="heading">
+                <img src="{%static 'images/open-box.png'%}" width="50" alt="logo"/>
+                <h1>CSBox</h1>
+            </div>
+            <img src="{%static 'images/hero-image.png'%}" width="550" alt="hero png"/>
+            <p>CSBox is an educational platform that universities can use to facilitate file sharing and collaborative learning among their students and faculty. CSBox allows users to upload and share files with each other, creating a centralized repository of course materials and collaborative projects. Additionally, chatting with peers and teachers, and real-time collaboration. This makes it easier for students and teachers to work together.</p>
+        </div>
+    </div>
+    
+{%endblock content%}

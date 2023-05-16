@@ -1,0 +1,61 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    Student-Registration | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/student_registration.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    <div class="wraper">
+        <div class="signin-form">
+            <h2>Student's Registration Form</h2>
+            <form>
+                <div class="double">
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+                </div>
+                
+                <div class="double">
+                    <input type="text" id="username" name="username" placeholder="Choose Username" required >
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <input type="text" id="student_id" name="student_id" placeholder="Student ID" required>
+                    
+                <select name="cars" id="cars"  required>
+                    <option value="" disabled selected>Department</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                <select name="cars" id="cars"  required>
+                    <option value="" disabled selected>Batch</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                <select name="cars" id="cars"  required>
+                    <option value="" disabled selected>Section</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <div class="double">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required>
+                </div>
+                <div class="double">
+                    <input type="submit" value="Confirm Registration">
+                    <a href="{%url 'signin'%}">Already have an account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{%endblock content%}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {%block title%} {%endblock title%}
+    </title>
+    <link rel="icon" type="image/icon" href="{%static 'images/open-box.png'%}"/>
+    {%block link%} {%endblock link%}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <link rel="stylesheet" href="{%static 'css/layout.css'%}"/>
+
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("myDropdown");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+    </script>
+
+    {%block script%}{%endblock script%}
+
+</head>
+<body>
+    
+    <nav class="navbar">
+      <div class="container">
+        <a class="branding" href="#">
+            <img src="{%static 'images/open-box.png'%}" width="43" alt="branding logo"/>
+            <h1>CSBox</h1>
+        </a>
+        <button class="dropdown-btn" onclick="toggleDropdown()">Registration As</button>
+            <div class="dropdown-content" id="myDropdown">
+                <a href="{%url 'teacher_registration'%}">Faculty</a>
+                <a href="{%url 'student_registration'%}">Student</a>
+            </div>
+      </div>  
+    </nav>
+    
+    <div class="main-content">
+        <div class="content">
+            {%block content%} {%endblock content%}
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="branding">
+                <img src="{%static 'images/open-box.png'%}" width="50" alt="logo"/>
+                <h1>CSBox</h1>
+            </div>
+            <div class="social-icons">
+                <ul>
+                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+				<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+				<li><a href="#"><i class="fab fa-github"></i></a></li>
+				<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                </ul>
+            </div>
+            <div class="address">
+                <p>Malibagh 1st Lane<br>Dhaka, ZIP: 1217<br>Bangladesh</p>
+            </div>
+            
+        </div>
+        <div class="copy">
+            <p>&copy; 2023 CSBox. All Rights Reserved By Tanvir Mahmud.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
