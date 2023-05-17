@@ -26,18 +26,70 @@ class Batch(models.Model):
         return f"{self.batch}"
     
 #======================================================================= All section of all department
-class DepartmentBatchSection(models.Model):
+class Section(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
-    section = models.CharField(max_length=1)
+    section = models.IntegerField()
 
     class Meta:
         verbose_name = 'section'
-        verbose_name = 'all batch section'
+        verbose_name_plural = 'all batch section'
 
     def __str__(self):
-        return f"{self.batch} {self.section} {self.department}"
+        return f" {self.department} {self.batch} {self.section}"
     
+
+#========================================================================== Teacher ID
+class TeacherId(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    teacherId = models.CharField(max_length=100)
+    
+    class Meta:
+        verbose_name = 'Teacher_ID'
+        verbose_name_plural = 'Teacher_id'
+    
+    def __str__(self):
+        return self.teacherId
+
+
+#=========================================================================== Student ID
+class StudentId(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    studentId = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Student_ID'
+        verbose_name_plural = 'Student_ID'
+    
+    def __str__(self):
+        return self.studentId
+
+
+#=========================================================================== Semester Name
+class SemesterName(models.Model):
+    name = models.CharField(max_length=100)
+    year = models.IntegerField()
+    
+    def __str__(self):
+        return f"{self.name} {self.year}"
+
+
+#=========================================================================== Semester
+class Semester(models.Model):
+    semesterName = models.ForeignKey(SemesterName, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    teacherId = models.ForeignKey(TeacherId, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Semeter'
+        verbose_name_plural = 'Semester'
+    
+    def __str__(self):
+        return f"{self.semesterName.name} {self.semesterName.year}"
+
+
+
 
 #=============================================================== User Verification
 class Verification(models.Model):

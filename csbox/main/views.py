@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Department, Batch, DepartmentBatchSection, Verification, TeacherProfile, StudentsProfile
+from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
