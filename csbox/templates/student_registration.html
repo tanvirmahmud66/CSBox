@@ -10,13 +10,58 @@
     <link rel="stylesheet" href="{%static 'css/student_registration.css'%}"/>
 {%endblock link%}
 
-{%block script%}{%endblock script%}
+{%block script%}
+<script>
+    function info(){
+        var departmentElement = document.getElementById("department")
+        var batchElement = document.getElementById("batch")
+        var sectionElement = document.getElementById("section")
+        var department = departmentElement.value
+        var batch = batchElement.value
+        console.log(department)
+        console.log(batch)
+        sectionElement.innerHTML = "<option value='' disabled selected>Section</option>";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get-section/?department=" + department + "&batch=" + batch, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("inside if")
+                var responses = xhr.responseText.split('\n');
+                responses.forEach(function(response) {
+                    if (response.trim() !== "") {
+                        console.log("inside inner if")
+                        var section = JSON.parse(response);
+                        console.log(section)
+                        section.forEach(function(each){
+                            var option = document.createElement("option");
+                            option.value = each.value;
+                            option.text = each.text;
+                            sectionElement.appendChild(option);
+                        })
+                        
+                    }
+                });
+            }
+        };
+        xhr.send();
+    }
+</script>
+{%endblock script%}
 
 {%block content%}
     <div class="wraper">
         <div class="signin-form">
             <h2>Student's Registration Form</h2>
-            <form>
+            <form method="POST">
+                {%csrf_token%}
+                {%if messages%}
+                    <div class="message">
+                        {%for each in messages%}
+                            <p>{{each}}</p>
+                        {%endfor%}
+                    </div>
+                {%endif%}
                 <div class="double">
                     <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
                     <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
@@ -28,23 +73,20 @@
                 </div>
                 <input type="text" id="student_id" name="student_id" placeholder="Student ID" required>
                     
-                <select name="cars" id="cars"  required>
+                <select name="department" id="department" onchange="info()"  required>
                     <option value="" disabled selected>Department</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                    {%for department in departments%}
+                        <option value="{{department.id}}">{{department}}</option>
+                    {%endfor%}
                 </select>
-                <select name="cars" id="cars"  required>
+                <select name="batch" id="batch" onchange="info()" required>
                     <option value="" disabled selected>Batch</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                    {%for batch in batches%}
+                    <option value="{{batch.id}}">{{batch}}</option>
+                    {%endfor%}
                 </select>
-                <select name="cars" id="cars"  required>
+                <select name="section" id="section" required>
                     <option value="" disabled selected>Section</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
                 </select>
 
                 <div class="double">

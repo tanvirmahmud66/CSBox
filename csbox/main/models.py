@@ -29,7 +29,7 @@ class Batch(models.Model):
 class Section(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
-    section = models.IntegerField()
+    section = models.CharField(max_length=1)
 
     class Meta:
         verbose_name = 'section'

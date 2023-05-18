@@ -1,6 +1,6 @@
 import uuid
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile
@@ -136,9 +136,27 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
 
 #======================================================== Registration (student)
 def student_registration(request):
-    return render(request, 'student_registration.html')
+    if request.method == "POST":
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
+        studentId = request.POST['student_id']
 
+    all_department = Department.objects.all()
+    all_batch = Batch.objects.all()
+    return render(request, 'student_registration.html', {
+        "departments": all_department,
+        "batches": all_batch,
+    })
 
+#----------- get section ----------------
+def get_section(request):
+    department = request.GET['department']
+    batch = request.GET['batch']
+    filtered_section = Section.objects.filter(department=department, batch=batch)
+    sections = [{"value": section.id, "text": section.section} for section in filtered_section]
+    return JsonResponse(sections, safe=False)
 #============================================================================= Student Verified
 def student_verified(request):
     pass
