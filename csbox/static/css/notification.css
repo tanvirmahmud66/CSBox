@@ -29,6 +29,10 @@
     justify-content: center;
     align-items: center;
 }
+.notification .sign{
+    text-decoration: none;
+    color: rgb(62, 62, 62);
+}
 .notification p{
     color: rgba(0, 0, 0, 0.63);
     font-size: 1.1rem;

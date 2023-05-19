@@ -38,11 +38,13 @@
             <img src="{%static 'images/open-box.png'%}" width="43" alt="branding logo"/>
             <h1>CSBox</h1>
         </a>
-        <button class="dropdown-btn" onclick="toggleDropdown()">Registration As</button>
-            <div class="dropdown-content" id="myDropdown">
-                <a href="{%url 'teacher_registration'%}">Faculty</a>
-                <a href="{%url 'student_registration'%}">Student</a>
-            </div>
+        <div>
+            <button class="dropdown-btn" onclick="toggleDropdown()">Registration As</button>
+                <div class="dropdown-content" id="myDropdown">
+                    <a href="{%url 'teacher_registration'%}">Faculty</a>
+                    <a href="{%url 'student_registration'%}">Student</a>
+                </div>
+        </div>
       </div>  
     </nav>
     

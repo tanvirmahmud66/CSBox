@@ -25,7 +25,15 @@ def signin(request):
                     user = authenticate(username=username, password=password)
                     if user is not None:
                         login(request, user)
-                        print("user logged In")
+                        print("user logged In As Teacher")
+                    else:
+                        messages.info(request, invalid)
+                        return redirect('signin')
+                elif verify_model.is_verified and verify_model.is_student:
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        return render(request, "student/home.html")
                     else:
                         messages.info(request, invalid)
                         return redirect('signin')
@@ -40,6 +48,13 @@ def signin(request):
             messages.info(request, "User Not Found!")
             return redirect('signin')
     return render(request, 'signin.html')
+
+
+#======================================================== Registration (Teacher)
+def logout_page(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('signin')
 
 
 #======================================================== Registration (Teacher)
@@ -141,8 +156,69 @@ def student_registration(request):
         last_name = request.POST['last_name']
         username = request.POST['username']
         email = request.POST['email']
-        studentId = request.POST['student_id']
-
+        student_id = request.POST['student_id']
+        sec = request.POST['section']
+        section_model = Section.objects.get(id=sec)
+        department = section_model.department
+        batch = section_model.batch
+        section = section_model.section
+        password = request.POST['password']
+        confirm_password = request.POST['confirm-password']
+        print(first_name, last_name, username, email, student_id, department, batch, section, password)
+        if password == confirm_password:
+            if User.objects.filter(username=username).exists():
+                messages.info(request, "Username already taken")
+                return redirect('student_registration')
+            elif User.objects.filter(email=email).exists():
+                messages.info(request, "This email already used")
+                return redirect('student_registration')
+            elif StudentsProfile.objects.filter(student_id=student_id).exists():
+                messages.info(request, "This Student ID already used")
+                return redirect('student_registration')
+            else:
+                new_user = User.objects.create_user(
+                    first_name=first_name,
+                    last_name=last_name,
+                    username=username,
+                    email=email,
+                    password=password
+                )
+                new_user.save()
+                user_model = User.objects.get(username=username)
+                token = str(uuid.uuid4())
+                verify = Verification.objects.create(
+                    user=user_model,
+                    token=token,
+                    is_student=True
+                )
+                verify.save()
+                domain_name = get_current_site(request).domain
+                dept_model = Department.objects.get(department=department)
+                batch_model = Batch.objects.get(batch=batch.batch)
+                section_model = Section.objects.get(
+                    department=department,
+                    batch=batch,
+                    section=section
+                )
+                link = f"http://{domain_name}/{username}/{student_id}/{dept_model.id}/{batch_model.id}/{section_model.id}/{token}/verified/"
+                subject = "Email Verification"
+                message = f"Please Click This Link {link} to verify your registration process. Thanks in Advanced."
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [email]
+                send_mail(
+                    subject,
+                    message,
+                    email_from,
+                    recipient_list,
+                    fail_silently=False
+                )
+                return render(request, 'notification.html',{
+                    "title": "Confirm Your Email",
+                    "notification": "We have Send an email to your email address for verify registration process. Please check your email address.",
+                })
+        else:
+            messages.info(request, 'Password not matched')
+            return redirect('student_registration')
     all_department = Department.objects.all()
     all_batch = Batch.objects.all()
     return render(request, 'student_registration.html', {
@@ -157,6 +233,30 @@ def get_section(request):
     filtered_section = Section.objects.filter(department=department, batch=batch)
     sections = [{"value": section.id, "text": section.section} for section in filtered_section]
     return JsonResponse(sections, safe=False)
+
+
 #============================================================================= Student Verified
-def student_verified(request):
-    pass
+def student_verified(request, username, student_id, dept_id, batch_id, section_id, token):
+    verify_model = Verification.objects.get(token=token)
+    verify_model.is_verified = True
+    verify_model.save()
+    user_model = User.objects.get(username=username)
+    department = Department.objects.get(id=dept_id)
+    batch = Batch.objects.get(id=batch_id)
+    section = Section.objects.get(id=section_id)
+    print(username, student_id, dept_id, batch_id, section_id, token)
+    print(department, batch, section)
+    new_student = StudentsProfile.objects.create(
+        user=user_model,
+        userId=user_model.id,
+        student_id = student_id,
+        department = department,
+        batch = batch,
+        section=section.section
+    )
+    new_student.save()
+    return render(request, "notification.html", {
+        "titile": "Email Confirmed",
+        "notification": "Your email is verified. Please",
+        "login": True
+    })
