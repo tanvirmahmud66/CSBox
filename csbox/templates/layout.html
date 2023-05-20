@@ -34,17 +34,43 @@
     
     <nav class="navbar">
       <div class="container">
-        <a class="branding" href="#">
-            <img src="{%static 'images/open-box.png'%}" width="43" alt="branding logo"/>
-            <h1>CSBox</h1>
-        </a>
-        <div>
-            <button class="dropdown-btn" onclick="toggleDropdown()">Registration As</button>
-                <div class="dropdown-content" id="myDropdown">
-                    <a href="{%url 'teacher_registration'%}">Faculty</a>
-                    <a href="{%url 'student_registration'%}">Student</a>
-                </div>
+        <div class="branding_section">
+            {%if request.user.is_authenticated%}
+                <a class="branding" href="{%url 'home'%}">
+                    <img src="{%static 'images/open-box.png'%}" width="43" alt="branding logo"/>
+                    <h1>CSBox</h1>
+                </a>
+            {%else%}
+                <a class="branding" href="{%url 'signin'%}">
+                    <img src="{%static 'images/open-box.png'%}" width="43" alt="branding logo"/>
+                    <h1>CSBox</h1>
+                </a>
+            {%endif%}
+            
+            {%if request.user.is_authenticated%}
+            <a class="all_courses" href="{%url 'courses'%}">All Courses</a>
+            {%endif%}
         </div>
+        {%if request.user.is_authenticated%}
+            <div>
+                <div class="dropdown-btn_div" onclick="toggleDropdown()">
+                    <div class="avatar"></div>
+                    {{request.user.first_name}} {{request.user.last_name}}
+                </div>
+                <div class="dropdown-content" id="myDropdown">
+                    <a href="#">My Account</a>
+                    <a href="{%url 'logout'%}">Logout</a>
+                </div>
+            </div>
+        {%else%}
+            <div>
+                <button class="dropdown-btn" onclick="toggleDropdown()">Registration As</button>
+                    <div class="dropdown-content" id="myDropdown">
+                        <a href="{%url 'teacher_registration'%}">Faculty</a>
+                        <a href="{%url 'student_registration'%}">Student</a>
+                    </div>
+            </div>
+        {%endif%}
       </div>  
     </nav>
     
@@ -54,6 +80,7 @@
         </div>
     </div>
     
+    {%if not request.user.is_authenticated%}
     <footer>
         <div class="footer-container">
             <div class="branding">
@@ -77,6 +104,7 @@
             <p>&copy; 2023 CSBox. All Rights Reserved By Tanvir Mahmud.</p>
         </div>
     </footer>
+    {%endif%}
 
 </body>
 </html>

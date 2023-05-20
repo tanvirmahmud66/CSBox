@@ -1,0 +1,46 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    All Courses | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%}
+<link rel="stylesheet" href="{%static 'css/teacher/all_courses.css'%}"/>
+{%endblock link%}
+
+{%block script%} {%endblock script%}
+
+{%block content%}
+    <div class="wraper">
+        <div class="semester">
+            <h1 class="heading">Semester</h1>
+            <div class="semester_content">
+                This is semester section
+            </div>
+        </div>
+        <div class="courses">
+            <a class="create_btn" href="#">
+                <div>
+                    <img src="{%static 'images/add.png'%}" alt="add logo">
+                    <p>Create Session</p>
+                </div>
+            </a>
+            <div class="courses-content">
+                <div class="content-wrapper">
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                    <div class="item">this</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock content%}

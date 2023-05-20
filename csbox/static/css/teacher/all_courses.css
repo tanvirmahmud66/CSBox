@@ -1,0 +1,81 @@
+.wraper{
+    width: 100%;
+    height: 93vh;
+    position: relative;
+    overflow: scroll;
+    position: relative;
+}
+
+.semester{
+    position: absolute;
+    top: 25px;
+    left: 10px;
+    width: 22%;
+    height: 94%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px black;
+}
+.heading {
+    width: 100%;
+    color: white;
+    padding: 12px;
+    font-size: 1.3rem;
+    text-align: center;
+    font-weight: 300;
+    background-color: #0A4D68;
+}
+
+.courses{
+    position: absolute;
+    right: 0;
+    top: 25px;
+    width: 75%;
+    height: 89vh;
+    /* background-color: green; */
+}
+.create_btn{
+    text-decoration: none;
+    background-color:#0A4D68;
+}
+.create_btn div{
+    width: 180px;
+    padding: 10px 13px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border:1.5px solid #10B0A7;
+    border-radius: 10px;
+    color: black;
+    transition: all ease .2s;
+}
+.create_btn div:hover{
+    background-color: #10B0A7;
+    color: white;
+}
+.create_btn p{
+    font-size: 1.1rem;
+}
+
+.courses-content{
+    margin-top: 20px;
+    height: 90%;
+    overflow: scroll;
+}
+.content-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+}
+
+.courses-content .item{
+    height: 150px;
+    width: 295px;
+    border-radius: 15px;
+    background-color: #F96167;
+    transition: all .2s ease;
+}
+.courses-content .item:hover{
+    background-color: #10B0A7;
+}

@@ -26,6 +26,7 @@ def signin(request):
                     if user is not None:
                         login(request, user)
                         print("user logged In As Teacher")
+                        return redirect('teacher_home')
                     else:
                         messages.info(request, invalid)
                         return redirect('signin')
@@ -50,7 +51,7 @@ def signin(request):
     return render(request, 'signin.html')
 
 
-#======================================================== Registration (Teacher)
+#======================================================== Logout User
 def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
@@ -260,3 +261,37 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
         "notification": "Your email is verified. Please",
         "login": True
     })
+
+
+#================================================================== Home
+def home(request):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('teacher_home')
+    else:
+        return redirect('student_home')
+
+#================================================================== Teacher Home page
+def teacher_home(request):
+    return render(request, "teacher/home.html",)
+
+#================================================================== Student Home page
+def student_home(request):
+    return render(request, "student/home.html")
+
+#================================================================== Courses
+def courses(request):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('teacher_courses')
+    else:
+        return redirect('student_courses')
+    
+#================================================================== Teacher Courses
+def teacher_courses(request):
+    return render(request, 'teacher/all_courses.html')
+
+
+#================================================================== Student Courses
+def student_courses(request):
+    return render(request, 'student/all_courses.html')
