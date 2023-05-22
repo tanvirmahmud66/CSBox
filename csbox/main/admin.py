@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department, Batch, Section, TeacherId, StudentId, SemesterName, Semester, Verification, TeacherProfile, StudentsProfile
+from .models import Department, Batch, Section, StudentId, Semester, Verification, TeacherProfile, StudentsProfile, SessionData
 
 
 # Register your models here.
@@ -15,19 +15,14 @@ class SectionView(admin.ModelAdmin):
     list_display = ('id', 'batch', 'section', 'department')
 
 
-class TeacherIdView(admin.ModelAdmin):
-    list_display = ('id', 'department', 'teacherId')
 
 class StudentIdView(admin.ModelAdmin):
     list_display = ('id', 'department', 'batch', 'studentId')
 
 
-class SemesterNameView(admin.ModelAdmin):
+class SemesterView(admin.ModelAdmin):
     list_display = ('id', 'name', 'year')
 
-
-class SemesterView(admin.ModelAdmin):
-    list_display = ('id', 'semesterName', 'department', 'teacherId')
 
 
 class VerificationView(admin.ModelAdmin):
@@ -42,13 +37,16 @@ class StudentProfileView(admin.ModelAdmin):
     list_display = ('user', 'user_id', 'student_id', 'department', 'batch', 'section')
 
 
+class SessionDataView(admin.ModelAdmin):
+    list_display = ('sessionName', 'department', 'batch', 'section', 'faculty', 'semester')
+
+
 admin.site.register(Department, DepartmentView)
 admin.site.register(Batch, BatchView)
 admin.site.register(Section, SectionView)
 admin.site.register(Verification, VerificationView)
 admin.site.register(TeacherProfile, TeacherProfileView)
 admin.site.register(StudentsProfile, StudentProfileView)
-admin.site.register(TeacherId, TeacherIdView)
 admin.site.register(StudentId, StudentIdView)
-admin.site.register(SemesterName, SemesterNameView)
 admin.site.register(Semester, SemesterView)
+admin.site.register(SessionData, SessionDataView)

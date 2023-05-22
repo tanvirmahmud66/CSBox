@@ -2,8 +2,6 @@
     width: 100%;
     height: 93vh;
     position: relative;
-    overflow: scroll;
-    position: relative;
 }
 
 .semester{
@@ -17,6 +15,7 @@
     box-shadow: 0 0 10px black;
 }
 .heading {
+    position: absolute;
     width: 100%;
     color: white;
     padding: 12px;
@@ -24,6 +23,37 @@
     text-align: center;
     font-weight: 300;
     background-color: #0A4D68;
+}
+.semester_content{
+    height: 100%;
+    overflow: scroll;
+}
+.list{
+    margin-top: 20%;
+    height: 100%;
+    list-style: none;
+}
+
+.list_item{
+    background-color: #dfdfdfe5;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.list_item a{
+    padding: .5rem 0;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: black;
+    font-size: 1.1rem;
+    text-align: center;
+    transition: all .2s ease;
+}
+.list_item a:hover{
+    background-color: #10B0A7;
+    color: white;
 }
 
 .courses{
@@ -35,8 +65,9 @@
     /* background-color: green; */
 }
 .create_btn{
-    text-decoration: none;
-    background-color:#0A4D68;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 .create_btn div{
     width: 180px;
@@ -68,14 +99,128 @@
     grid-column-gap: 1rem;
     grid-row-gap: 1rem;
 }
+.content-wrapper a{
+    text-decoration: none;
+}
 
 .courses-content .item{
     height: 150px;
     width: 295px;
     border-radius: 15px;
     background-color: #F96167;
+    overflow: hidden;
+    padding: .6rem;
     transition: all .2s ease;
+    box-shadow: 1px 1px 4px gray;
+    position: relative;
 }
 .courses-content .item:hover{
-    background-color: #10B0A7;
+    background-color: #10b0a8;
 }
+
+
+.course-name{
+    color: white;
+    text-align: left;
+    font-size: 1.3rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.course-info{
+    position: absolute;
+    bottom: 0;
+    height: 80px;
+    margin-top: .4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-bottom: .3rem;
+}
+.department_name, .batch_name, .section_name{
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgb(230, 230, 230);
+}
+
+.popupContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.661);
+}
+
+.popupContent {
+    background-color: white;
+    width: 500px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.popupContent h2 {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+}
+input[type='text']{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+option {
+    padding: 5px;
+}
+.btn-group{
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.submit-button {
+    display: block;
+    width: 45%;
+    padding: 10px;
+    background-color: #10B0A7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#closeButton{
+    background-color: rgba(247, 0, 49, 0.888);
+}
+

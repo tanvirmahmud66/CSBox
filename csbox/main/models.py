@@ -39,17 +39,6 @@ class Section(models.Model):
         return f" {self.department} {self.batch} {self.section}"
     
 
-#========================================================================== Teacher ID
-class TeacherId(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    teacherId = models.CharField(max_length=100)
-    
-    class Meta:
-        verbose_name = 'Teacher_ID'
-        verbose_name_plural = 'Teacher_id'
-    
-    def __str__(self):
-        return self.teacherId
 
 
 #=========================================================================== Student ID
@@ -67,26 +56,15 @@ class StudentId(models.Model):
 
 
 #=========================================================================== Semester Name
-class SemesterName(models.Model):
-    name = models.CharField(max_length=100)
-    year = models.IntegerField()
+class Semester(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-year']
     
     def __str__(self):
         return f"{self.name} {self.year}"
-
-
-#=========================================================================== Semester
-class Semester(models.Model):
-    semesterName = models.ForeignKey(SemesterName, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    teacherId = models.ForeignKey(TeacherId, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Semeter'
-        verbose_name_plural = 'Semester'
-    
-    def __str__(self):
-        return f"{self.semesterName.name} {self.semesterName.year}"
 
 
 
@@ -137,3 +115,19 @@ class StudentsProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class SessionData(models.Model):
+    sessionName = models.CharField(max_length=200)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    faculty = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Session Data'
+        verbose_name_plural = 'Session Data'
+    
+    def __str__(self):
+        return self.sessionName

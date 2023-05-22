@@ -10,37 +10,132 @@
 <link rel="stylesheet" href="{%static 'css/teacher/all_courses.css'%}"/>
 {%endblock link%}
 
-{%block script%} {%endblock script%}
+{%block script%}
+<script>
+    function info(){
+        var departmentElement = document.getElementById("department")
+        var batchElement = document.getElementById("batch")
+        var sectionElement = document.getElementById("section")
+        var department = departmentElement.value
+        var batch = batchElement.value
+        console.log(department)
+        console.log(batch)
+        sectionElement.innerHTML = "<option value='' disabled selected>Section</option>";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/get-section/?department=" + department + "&batch=" + batch, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("inside if")
+                var responses = xhr.responseText.split('\n');
+                responses.forEach(function(response) {
+                    if (response.trim() !== "") {
+                        console.log("inside inner if")
+                        var section = JSON.parse(response);
+                        console.log(section)
+                        section.forEach(function(each){
+                            var option = document.createElement("option");
+                            option.value = each.value;
+                            option.text = each.text;
+                            sectionElement.appendChild(option);
+                        })
+                    }
+                });
+            }
+        };
+        xhr.send();
+    }
+</script>
+{%endblock script%}
 
 {%block content%}
     <div class="wraper">
         <div class="semester">
             <h1 class="heading">Semester</h1>
             <div class="semester_content">
-                This is semester section
+                    <ul class="list">
+                        {%for each in semesters%}
+                        <li class="list_item"><a href="{%url 'teacher_courses'%}?q={{each.id}}">{{each}}</a></li>
+                        {%endfor%}
+                    </ul>
             </div>
         </div>
         <div class="courses">
-            <a class="create_btn" href="#">
+            <button class="create_btn" id="popupButton">
                 <div>
                     <img src="{%static 'images/add.png'%}" alt="add logo">
                     <p>Create Session</p>
                 </div>
-            </a>
+            </button>
+            <div id="popupContainer" class="popupContainer">
+                <div class="popupContent">
+                    <h2>Create Session</h2>
+                    <form method="POST">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            <input type="text" id="sessionName" name="sessionName" placeholder="Session Name">
+                        </div>
+            
+                        <div class="form-group">
+                            <select id="department" name="department" onchange="info()" required>
+                                <option value="" disabled selected>Department</option>
+                                {%for department in departments%}
+                                <option value="{{department.id}}">{{department}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+            
+                        <div class="form-group">
+                            <select id="batch" name="batch" onchange="info()" required>
+                                <option value="" disabled selected>Batch</option>
+                                {%for batch in batches%}
+                                <option value="{{batch.id}}">{{batch}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+            
+                        <div class="form-group">
+                            <select name="section" id="section" required>
+                                <option value="" disabled selected>Section</option>
+                            </select>
+                        </div>
+            
+                        <div class="form-group">
+                            <select id="semester" name="semester" required>
+                                <option value="" selected>Semester</option>
+                                {%for semester in semesters%}
+                                <option value="{{semester.id}}">{{semester}}</option>
+                                {%endfor%}
+                            </select>
+                        </div>
+                        <div class="btn-group">
+                            <button id="closeButton" class="submit-button">Close</button>
+                            <button type="submit" class="submit-button">Submit</button>
+                        </div>
+                        
+                    </form>
+                    
+                </div>
+            </div>
             <div class="courses-content">
                 <div class="content-wrapper">
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
-                    <div class="item">this</div>
+                    {%for session in all_session%}
+                    <a href="#">
+                        <div class="item">
+                            <h2 class="course-name">{{session.sessionName}}</h2>
+                            <div class="course-info">
+                                <h5 class="department_name">{{session.department}}</h5>
+                                <h5 class="batch_name">Batch: {{session.batch}}</h5>
+                                <h5 class="section_name">Section: {{session.section.section}}</h5>
+                            </div>
+                        </div>
+                    </a>
+                    {%endfor%}
                 </div>
             </div>
         </div>
     </div>
 {%endblock content%}
+{%block downscript%} 
+    <script src="{%static 'javascript/teacher/all_courses.js'%}"></script>
+{%endblock downscript%}

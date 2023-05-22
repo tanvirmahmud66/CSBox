@@ -3,12 +3,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile
+from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, StudentId, Semester, SessionData
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 #======================================================== Sign In
@@ -135,19 +136,22 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
     verify_model.save()
     user_model = User.objects.get(username=username)
     department = Department.objects.get(id=dept_id)
-    new_teacher_profile = TeacherProfile.objects.create(
-        user=user_model,
-        userId=user_model.id,
-        teacher_id=teacher_id,
-        designation=designation,
-        department=department
-    )
-    new_teacher_profile.save()
-    return render(request, 'notification.html', {
-        "title": "Email Confirmed",
-        "notification": "Your email is verified. Please", 
-        "login": True
-    })
+    if TeacherProfile.objects.filter(user=user_model).exists():
+        return redirect('signin')
+    else:
+        new_teacher_profile = TeacherProfile.objects.create(
+            user=user_model,
+            userId=user_model.id,
+            teacher_id=teacher_id,
+            designation=designation,
+            department=department
+        )
+        new_teacher_profile.save()
+        return render(request, 'notification.html', {
+            "title": "Email Confirmed",
+            "notification": "Your email is verified. Please", 
+            "login": True
+        })
 
 
 #======================================================== Registration (student)
@@ -255,6 +259,11 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
         batch = batch,
         section=section.section
     )
+    student_listing = StudentId.objects.create(
+        department = department, 
+        StudentId = student_id
+    )
+    student_listing.save()
     new_student.save()
     return render(request, "notification.html", {
         "titile": "Email Confirmed",
@@ -289,9 +298,53 @@ def courses(request):
     
 #================================================================== Teacher Courses
 def teacher_courses(request):
-    return render(request, 'teacher/all_courses.html')
+    if request.method=="POST":
+        sessionName = request.POST['sessionName']
+        sec = request.POST['section']
+        section_model = Section.objects.get(id=sec)
+        department = section_model.department
+        batch = section_model.batch
+        section = section_model
+        sem = request.POST['semester']
+        semester = Semester.objects.get(id=sem)
+        print("Course Name: ", sessionName)
+        print("Department: ", department)
+        print("Batch: ", batch)
+        print("Section: ", section.section)
+        print("Semester: ", semester)
+        teacher_id = TeacherProfile.objects.get(user=request.user)
+        new_session = SessionData.objects.create(
+            sessionName=sessionName,
+            department=department,
+            batch=batch,
+            section=section,
+            faculty=teacher_id,
+            semester=semester
+        )
+        new_session.save()
+    departments = Department.objects.all()
+    batches = Batch.objects.all()
+    semesters = Semester.objects.all()
+    if request.GET.get('q')!=None:
+        q=request.GET.get('q')
+        all_session = SessionData.objects.filter(
+            faculty__user=request.user,
+            semester=q
+        )
+    else:
+        all_session = SessionData.objects.filter(
+           faculty__user=request.user 
+        )
+        
+    return render(request, 'teacher/all_courses.html', {
+        "departments": departments,
+        "batches": batches, 
+        "semesters": semesters,
+        "all_session": all_session.order_by('semester'),
+    })
 
 
 #================================================================== Student Courses
 def student_courses(request):
     return render(request, 'student/all_courses.html')
+
