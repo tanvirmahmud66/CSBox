@@ -43,7 +43,7 @@
     color: white;
 }
 .branding_section{
-  width: 260px;
+  width: 240px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,6 +51,10 @@
 .branding_section .all_courses{
   text-decoration: none;
   color: white;
+}
+.branding_section .all_courses:hover{
+  color: rgba(255, 255, 255, 0.865);
+  transition: all .1s ease-in-out;
 }
 .branding h1{
     font-size: 1.7rem;
@@ -73,9 +77,16 @@
   color: white;
   padding: 6px 16px 6px 10px;
   border:1px solid #10B0A7;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
   position: relative;
+  transition: all .2s ease;
+}
+
+.dropdown-btn_div:hover {
+  background-color: #10B0A7;
+  color: white;
 }
 
 

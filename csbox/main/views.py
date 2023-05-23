@@ -129,7 +129,8 @@ def teacher_registration(request):
     })
 
 
-#============================================================================= Teacher Verified
+#================================================================================= Teacher Verified
+
 def teacher_verified(request, username, teacher_id, designation, dept_id, token):
     verify_model = Verification.objects.get(token=token)
     verify_model.is_verified = True
@@ -240,7 +241,7 @@ def get_section(request):
     return JsonResponse(sections, safe=False)
 
 
-#============================================================================= Student Verified
+#=========================================================================================== Student Verified
 def student_verified(request, username, student_id, dept_id, batch_id, section_id, token):
     verify_model = Verification.objects.get(token=token)
     verify_model.is_verified = True
@@ -331,9 +332,18 @@ def teacher_courses(request):
             faculty__user=request.user,
             semester=q
         )
+        sem = Semester.objects.get(id=q)
+        return render(request, 'teacher/all_courses.html', {
+            "departments": departments,
+            "batches": batches, 
+            "semesters": semesters,
+            "all_session": all_session.order_by('semester'),
+            "q": sem
+        })
     else:
         all_session = SessionData.objects.filter(
-           faculty__user=request.user 
+           faculty__user=request.user,
+           semester=semesters[0] 
         )
         
     return render(request, 'teacher/all_courses.html', {
@@ -341,10 +351,32 @@ def teacher_courses(request):
         "batches": batches, 
         "semesters": semesters,
         "all_session": all_session.order_by('semester'),
+        "q": semesters[0]
     })
 
 
 #================================================================== Student Courses
 def student_courses(request):
     return render(request, 'student/all_courses.html')
+
+
+#================================================================== Single course
+def single_course(request, session_name,pk):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('fuculty_single_course', session_name,pk)
+    else:
+        return redirect('student_single_course', session_name,pk)
+
+#=================================================================== Faculty Single Course
+def faculty_single_course(request, session_name,pk):
+    course_obj = SessionData.objects.get(id=pk)
+    return render(request, 'teacher/single_course.html', {
+        "course_obj": course_obj,
+    })
+
+
+#=================================================================== Student Single Course
+def student_single_course(request, pk):
+    pass
 

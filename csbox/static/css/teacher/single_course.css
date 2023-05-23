@@ -1,0 +1,43 @@
+.wraper{
+    width: 100%;
+    height: 93vh;
+    /* background-color: crimson; */
+    position: relative;
+}
+.course_info{
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 400px;
+    height: 270px;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.course_title{
+    width: 100%;
+    height: 25%;
+    font-size: 1.7rem;
+    /* background-color: yellow; */
+    color: black;
+    overflow: hidden;
+    border-bottom: 2px solid black;
+    display: flex;
+    align-items: center;
+}
+.course_details{
+    width: 100%;
+    height: 70%;
+    /* background-color: purple; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.element{
+    font-size: 1.1rem;
+}
+.bold{
+    font-weight: bold;
+    color: black;
+}

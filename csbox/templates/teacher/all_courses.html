@@ -1,9 +1,10 @@
 {%extends 'layout.html'%}
 
 {%load static%}
+{% load humanize %}
 
 {%block title%}
-    All Courses | CSBox - Educational Platform
+    Sessions | CSBox - Educational Platform
 {%endblock title%}
 
 {%block link%}
@@ -45,6 +46,8 @@
         };
         xhr.send();
     }
+
+    
 </script>
 {%endblock script%}
 
@@ -55,18 +58,21 @@
             <div class="semester_content">
                     <ul class="list">
                         {%for each in semesters%}
-                        <li class="list_item"><a href="{%url 'teacher_courses'%}?q={{each.id}}">{{each}}</a></li>
+                        <li  class="list_item"><a href="{%url 'teacher_courses'%}?q={{each.id}}">{{each}}</a></li>
                         {%endfor%}
                     </ul>
             </div>
         </div>
         <div class="courses">
-            <button class="create_btn" id="popupButton">
-                <div>
-                    <img src="{%static 'images/add.png'%}" alt="add logo">
-                    <p>Create Session</p>
-                </div>
-            </button>
+            <div class="head">
+                <button class="create_btn" id="popupButton">
+                    <div>
+                        <img src="{%static 'images/add.png'%}" alt="add logo">
+                        <p>Create Session</p>
+                    </div>
+                </button>
+                <h3 id="head-semester" class="head-semester">{%if q%}{{q}}{%endif%}</h3>
+            </div>
             <div id="popupContainer" class="popupContainer">
                 <div class="popupContent">
                     <h2>Create Session</h2>
@@ -120,7 +126,7 @@
             <div class="courses-content">
                 <div class="content-wrapper">
                     {%for session in all_session%}
-                    <a href="#">
+                    <a href="{%url 'single_course' session.sessionName session.id%}">
                         <div class="item">
                             <h2 class="course-name">{{session.sessionName}}</h2>
                             <div class="course-info">

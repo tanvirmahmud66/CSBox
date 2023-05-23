@@ -1,0 +1,28 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    {{course_obj.sessionName}} | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/teacher/single_course.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    <div class="wraper">
+        <div class="course_info">
+            <h1 class="course_title">{{course_obj.sessionName}}</h1>
+            <div class="course_details">
+                <p class="element"><span class="bold">Faculty:</span> {{course_obj.faculty.user.first_name}} {{course_obj.faculty.user.last_name}} ({{course_obj.faculty.designation}})</p>
+                <p class="element"><span class="bold">Semester:</span> {{course_obj.semester}}</p>
+                <p class="element"><span class="bold">Department:</span> {{course_obj.department}}</p>
+                <p class="element"><span class="bold">Batch:</span> {{course_obj.batch}}</p>
+                <p class="element"><span class="bold">Section:</span> {{course_obj.section.section}}</p>
+            </div>
+        </div>
+    </div>
+{%endblock content%}

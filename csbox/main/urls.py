@@ -21,4 +21,8 @@ urlpatterns = [
     path('courses', views.courses, name='courses'),
     path('faculty/courses/', views.teacher_courses, name='teacher_courses'),
     path('student/courses/', views.student_courses, name='student_courses'),
+
+    path('single_course/<str:session_name>-<int:pk>/', views.single_course, name='single_course'),
+    path('faculty/courses/<str:session_name>-<int:pk>/', views.faculty_single_course, name='fuculty_single_course'),
+    path('student/courses/<str:session_name>-<int:pk>/', views.student_single_course, name='student_single_course'),
 ]

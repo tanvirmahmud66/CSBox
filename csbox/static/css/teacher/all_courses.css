@@ -64,6 +64,11 @@
     height: 89vh;
     /* background-color: green; */
 }
+.courses .head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .create_btn{
     background: none;
     border: none;
@@ -107,20 +112,31 @@
     height: 150px;
     width: 295px;
     border-radius: 15px;
-    background-color: #F96167;
+    /* background-color: #F96167; */
+    background-color: #26a0da;
+    color: rgba(255, 255, 255, 0.866);
     overflow: hidden;
     padding: .6rem;
     transition: all .2s ease;
-    box-shadow: 1px 1px 4px gray;
+    box-shadow: 1px 1px 4px rgb(200, 200, 200);
     position: relative;
 }
 .courses-content .item:hover{
-    background-color: #10b0a8;
+    background-color: #16719b;
+    color: white;
+}
+.item:hover .department_name{
+    color: rgba(255, 255, 255, 0.837);
+}
+.item:hover .batch_name{
+    color: rgba(53, 231, 13, 0.851);
+}
+.item:hover .section_name{
+    color: rgba(253, 166, 51, 0.888);
 }
 
-
 .course-name{
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: left;
     font-size: 1.3rem;
     font-weight: 600;
@@ -140,7 +156,8 @@
 .department_name, .batch_name, .section_name{
     font-size: 1rem;
     font-weight: 400;
-    color: rgb(230, 230, 230);
+    color: rgb(60, 60, 60);
+    transition: all .2s ease;
 }
 
 .popupContainer {
