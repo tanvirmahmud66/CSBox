@@ -117,6 +117,7 @@ class StudentsProfile(models.Model):
         return self.user.username
 
 
+#============================================================= Session Data
 class SessionData(models.Model):
     sessionName = models.CharField(max_length=200)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
@@ -131,3 +132,5 @@ class SessionData(models.Model):
     
     def __str__(self):
         return self.sessionName
+    
+

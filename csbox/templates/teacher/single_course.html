@@ -24,5 +24,31 @@
                 <p class="element"><span class="bold">Section:</span> {{course_obj.section.section}}</p>
             </div>
         </div>
+        <div class="other_info">
+            <div class="other_info_header">
+                <button id="repo_button" class="other_info_btn active">Repository</button>
+                <button id="member_button" class="other_info_btn">Course Member</button>
+            </div>
+            <div class="other_info_details">
+                <div id="Repo_section" class="repo_section">
+                    This is repo section
+                </div>
+                <div id="Member_section" class="member_section">
+                    This is member Section
+                </div>
+            </div>
+        </div>
+        <div class="post_section">
+            <button id="popupButton" class="post_btn">Create Post or Announcement</button>
+        </div>
+    </div>
+    <div id="popupContainer" class="popupContainer">
+        <div class="popupContent">
+            <h2>Create Post or Announcement</h2>
+            <button id="closeButton">Close</button>
+        </div>
     </div>
 {%endblock content%}
+{%block downscript%} 
+    <script src="{%static 'javascript/teacher/single_course.js'%}"></script>
+{%endblock downscript%}
