@@ -45,7 +45,30 @@
     <div id="popupContainer" class="popupContainer">
         <div class="popupContent">
             <h2>Create Post or Announcement</h2>
-            <button id="closeButton">Close</button>
+            <div class="Post">
+                <form method="POST" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <textarea id="post_content" name="post_content" placeholder="write here..."></textarea>
+                        <ul class="file-list"></ul>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="file-upload">
+                            <input type="file" id="file-input" name="files" multiple>
+                        </div>
+
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="announcement" name="announcement" value="True">
+                            <label for="announcement" class="checkbox-label">Announcement</label>
+                        </div>
+                    </div>                
+                    
+                    
+                    <input type="submit" class="post-btn" value="Post">
+                </form>
+            </div>
+            <button id="closeButton" class="closeButton"><i class="fas fa-times"></i></button>
         </div>
     </div>
 {%endblock content%}

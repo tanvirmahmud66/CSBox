@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, StudentId, Semester, SessionData
+from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, StudentId, Semester, SessionData, PostDB, CommentDB, FileDatabase
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 #======================================================== Sign In
+
 def signin(request):
     if request.method=="POST":
         username = request.POST["username"]
@@ -53,6 +54,7 @@ def signin(request):
 
 
 #======================================================== Logout User
+
 def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
@@ -60,6 +62,7 @@ def logout_page(request):
 
 
 #======================================================== Registration (Teacher)
+
 def teacher_registration(request):
     if request.method == "POST":
         first_name = request.POST["first_name"]
@@ -155,7 +158,8 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
         })
 
 
-#======================================================== Registration (student)
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Registration (student)
+
 def student_registration(request):
     if request.method == "POST":
         first_name = request.POST['first_name']
@@ -241,7 +245,9 @@ def get_section(request):
     return JsonResponse(sections, safe=False)
 
 
-#=========================================================================================== Student Verified
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Student Verified
+
 def student_verified(request, username, student_id, dept_id, batch_id, section_id, token):
     verify_model = Verification.objects.get(token=token)
     verify_model.is_verified = True
@@ -285,7 +291,7 @@ def home(request):
 def teacher_home(request):
     return render(request, "teacher/home.html",)
 
-#================================================================== Student Home page
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Home page
 def student_home(request):
     return render(request, "student/home.html")
 
@@ -355,7 +361,7 @@ def teacher_courses(request):
     })
 
 
-#================================================================== Student Courses
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Courses
 def student_courses(request):
     return render(request, 'student/all_courses.html')
 
@@ -371,12 +377,46 @@ def single_course(request, session_name,pk):
 #=================================================================== Faculty Single Course
 def faculty_single_course(request, session_name,pk):
     course_obj = SessionData.objects.get(id=pk)
+    verify_obj = Verification(user=request.user)
+    if request.method == "POST":
+        postbody = request.POST['post_content']
+        files = request.FILES.getlist('files')
+        is_announcement = request.POST['announcement']
+        if verify_obj.is_teacher:
+            new_post = PostDB.objects.create(
+                session = course_obj,
+                creator = course_obj.faculty.user,
+                is_teacher=True,
+                is_announcement=is_announcement,
+                postBody = postbody,
+            )
+            new_post.save()
+            for file in files:
+                FileDatabase.objects.create(
+                    uploadFile = file,
+                    sessionId = course_obj.id,
+                    postId=new_post.id
+                )
+        else:
+            new_post = PostDB.objects.create(
+                session = course_obj,
+                creator = request.user,
+                is_student=True,
+                postBody=postbody
+            )
+            new_post.save()
+            for file in files:
+                FileDatabase.objects.create(
+                    uploadFile = file,
+                    sessionId = course_obj.id,
+                    postId=new_post.id
+                )
     return render(request, 'teacher/single_course.html', {
         "course_obj": course_obj,
     })
 
 
-#=================================================================== Student Single Course
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
 def student_single_course(request, pk):
     pass
 

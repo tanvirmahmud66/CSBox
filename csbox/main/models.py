@@ -132,5 +132,52 @@ class SessionData(models.Model):
     
     def __str__(self):
         return self.sessionName
-    
 
+
+#============================================================== Post Database
+class PostDB(models.Model):
+    session = models.ForeignKey(SessionData, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_teacher = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
+    is_announcement = models.BooleanField(default=False)
+    postBody = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Post DB"
+        verbose_name_plural = "Post DB"
+        ordering = ['-updated', '-created']
+    
+    def __str__(self):
+        return self.session.faculty.user
+
+
+#=============================================================== File Database
+class FileDatabase(models.Model):
+    uploadFile = models.FileField(upload_to='uploaded_files/', null=True, blank=True)
+    sessionId = models.IntegerField()
+    postId = models.IntegerField()
+
+    class Meta:
+        verbose_name = "Files Database"
+        verbose_name_plural = "Files Database"
+
+    def __str__(self):
+        return self.sessionId    
+
+
+#================================================================ Post's Comment Database
+class CommentDB(models.Model):
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE)
+    postId = models.ForeignKey(PostDB, on_delete=models.CASCADE)
+    commentBody = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Comment DB"
+        verbose_name_plural = "Comment DB"
+
+    def __str__(self):
+        return self.commentBody

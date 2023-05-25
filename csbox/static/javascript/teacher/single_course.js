@@ -19,3 +19,19 @@ document.getElementById("popupButton").addEventListener("click", function() {
 document.getElementById("closeButton").addEventListener("click", function() {
     document.getElementById("popupContainer").style.display = "none";
 });
+
+
+
+const fileInput = document.getElementById('file-input');
+const fileList = document.querySelector('.file-list');
+
+fileInput.addEventListener('change', handleFileSelect);
+
+function handleFileSelect(event) {
+  const files = event.target.files;
+  for (let i = 0; i < files.length; i++) {
+    const listItem = document.createElement('li');
+    listItem.textContent = files[i].name;
+    fileList.appendChild(listItem);
+  }
+}

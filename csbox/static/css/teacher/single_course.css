@@ -17,14 +17,12 @@
 }
 .course_title{
     width: 100%;
-    height: 25%;
+    height: 22%;
     font-size: 1.7rem;
-    /* background-color: yellow; */
     color: black;
     overflow: hidden;
     border-bottom: 2px solid black;
     display: flex;
-    align-items: center;
 }
 .course_details{
     width: 100%;
@@ -79,8 +77,9 @@
 .other_info_details{
     width: 100%;
     height: 88%;
-    background-color: rgb(223, 223, 223);
-    box-shadow: inset 0 0 6px 3px rgba(0, 0, 0, 0.3);
+    background-color: #0A4D68;
+    color: white;
+    box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.3);
 }
 .repo_section{
     width: 100%;
@@ -127,23 +126,159 @@
     width: 100%;
     height: 100%;
     z-index: 100;
-    background-color: rgba(0, 0, 0, 0.661);
+    background-color: rgba(0, 0, 0, 0.787);
 }
 
 .popupContent {
     background-color: white;
-    width: 500px;
+    width: 750px;
+    height: 440px;
     padding: 20px;
     border-radius: 5px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    position: relative;
 }
 
 
 
 .popupContent h2 {
+    font-weight: 400;
+    font-size:1.4rem;
     text-align: center;
     margin-bottom: 1.2rem;
 }
+.Post{
+    width: 100%;
+    height: 90%;
+    /* background-color: red; */
+}
+
+.popupContent button{
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 0 0 2px 2px rgb(36, 36, 36);
+    transition: all .2s ease;
+}
+.popupContent button:hover{
+    background: red;
+    color: white;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    height: 230px;
+    padding: 0 0 20px 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+
+  
+/* Textarea styles */
+.form-group textarea {
+    font-size: 24px;
+    line-height: 1.5;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
+    height: 160px;
+  }
+  
+.form-group textarea:focus {
+    outline: none;
+  }
+  
+  
+  .form-group input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .group{
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .file-upload {
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  
+  .file-upload:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .file-upload:active {
+    background-color: #d0d0d0;
+  }
+  
+  .file-upload span {
+    margin-right: 5px;
+  }
+  
+  .file-list {
+    width: 100%;
+    height: 70px;
+    padding: 15px 0;
+    /* margin-top: 10px; */
+    font-size: 14px;
+    display: flex;
+    overflow: scroll;
+  }
+  
+  .file-list li {
+    margin-bottom: 5px;
+    width: auto;
+    list-style-type: none;
+    display: flex;
+    margin-right: 15px;
+    border: 1px solid #0A4D68;
+    border-radius: 10px;
+    padding: 5px 7px;
+    color: rgb(73, 73, 253);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.post-btn{
+    margin-top: 1.5rem;
+    padding: 10px 35px;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #10B0A7;
+    color: white;
+    transition: all .2s ease;
+}
+.post-btn:hover{
+    background-color: #0b827c;
+    color: white;
+}
+ 
