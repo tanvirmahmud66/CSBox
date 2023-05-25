@@ -31,7 +31,9 @@
             </div>
             <div class="other_info_details">
                 <div id="Repo_section" class="repo_section">
-                    This is repo section
+                    {%for file in files%}
+                        <div>{{file}}</div>
+                    {%endfor%}
                 </div>
                 <div id="Member_section" class="member_section">
                     This is member Section

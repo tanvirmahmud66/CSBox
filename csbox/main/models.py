@@ -140,7 +140,7 @@ class PostDB(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     is_teacher = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
-    is_announcement = models.BooleanField(default=False)
+    is_announcement = models.BooleanField(null=True, blank=True)
     postBody = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -151,7 +151,7 @@ class PostDB(models.Model):
         ordering = ['-updated', '-created']
     
     def __str__(self):
-        return self.session.faculty.user
+        return f"{self.session.faculty.user}"
 
 
 #=============================================================== File Database
@@ -165,7 +165,7 @@ class FileDatabase(models.Model):
         verbose_name_plural = "Files Database"
 
     def __str__(self):
-        return self.sessionId    
+        return f"{self.uploadFile}"    
 
 
 #================================================================ Post's Comment Database

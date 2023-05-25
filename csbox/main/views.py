@@ -377,42 +377,39 @@ def single_course(request, session_name,pk):
 #=================================================================== Faculty Single Course
 def faculty_single_course(request, session_name,pk):
     course_obj = SessionData.objects.get(id=pk)
-    verify_obj = Verification(user=request.user)
+    verify_obj = Verification.objects.get(user=request.user)
+    all_post = PostDB.objects.filter(session=course_obj)
+    all_files = FileDatabase.objects.filter(sessionId=pk)
     if request.method == "POST":
         postbody = request.POST['post_content']
         files = request.FILES.getlist('files')
-        is_announcement = request.POST['announcement']
+        is_announcement = request.POST.get("announcement")
+        if is_announcement=="True":
+            announcement = True
+        else:
+            announcement = False
+        print(postbody, files, is_announcement)
         if verify_obj.is_teacher:
             new_post = PostDB.objects.create(
                 session = course_obj,
                 creator = course_obj.faculty.user,
                 is_teacher=True,
-                is_announcement=is_announcement,
+                is_announcement=announcement,
                 postBody = postbody,
             )
             new_post.save()
             for file in files:
-                FileDatabase.objects.create(
+                file_upload = FileDatabase.objects.create(
                     uploadFile = file,
                     sessionId = course_obj.id,
                     postId=new_post.id
                 )
-        else:
-            new_post = PostDB.objects.create(
-                session = course_obj,
-                creator = request.user,
-                is_student=True,
-                postBody=postbody
-            )
-            new_post.save()
-            for file in files:
-                FileDatabase.objects.create(
-                    uploadFile = file,
-                    sessionId = course_obj.id,
-                    postId=new_post.id
-                )
+                file_upload.save()
+                return redirect("fuculty_single_course", session_name, pk)
     return render(request, 'teacher/single_course.html', {
         "course_obj": course_obj,
+        "posts": all_post,
+        "files": all_files,
     })
 
 
