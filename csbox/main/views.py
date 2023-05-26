@@ -405,7 +405,7 @@ def faculty_single_course(request, session_name,pk):
                     postId=new_post.id
                 )
                 file_upload.save()
-                return redirect("fuculty_single_course", session_name, pk)
+            return redirect("fuculty_single_course", session_name, pk)
     return render(request, 'teacher/single_course.html', {
         "course_obj": course_obj,
         "posts": all_post,
