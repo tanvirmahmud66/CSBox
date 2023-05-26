@@ -22,6 +22,16 @@ document.getElementById("closeButton").addEventListener("click", function() {
 
 
 
+
+
+
+
+
+
+
+
+
+
 const fileInput = document.getElementById('file-input');
 const fileList = document.querySelector('.file-list');
 
@@ -35,3 +45,5 @@ function handleFileSelect(event) {
     fileList.appendChild(listItem);
   }
 }
+
+

@@ -113,6 +113,7 @@
     font-weight: bold;
     cursor: pointer;
     background:none;
+    border-radius: 5px;
     border: 2.2px solid #10B0A7;
     transition: all .2s ease;
 }
@@ -132,6 +133,7 @@
     margin: 1.5rem 0;
     padding: 10px;
     border: 1.5px solid black;
+    border-radius: 10px;
     position: relative;
 }
 .post-card-red{
@@ -139,7 +141,8 @@
     padding: 2rem 0;
     margin: 1.5rem 0;
     padding: 10px;
-    border: 3px solid red;
+    border: 3px solid rgb(248, 65, 65);
+    border-radius: 10px;
     position: relative;
 }
 .card-heading-warper{
@@ -173,16 +176,66 @@
     line-height: 1.9rem;
 }
 
-.post-toggle-btn{
+.toggle-button{
     position: absolute;
     top:5px;
     right: 5px;
     padding:5px;
-    background: none;
-    border: none;
     cursor: pointer;
+    border: none;
 }
 
+  
+  .toggle-section {
+    display: none;
+    width: 100px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    position: absolute;
+    top: 30px;
+    right: 5px;
+}
+.toggle-section .toggle-section-wraper{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.toggle-section-wraper button{
+    padding: 3px 10px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+.toggle-section-wraper button:hover{
+    background-color:#10B0A7;
+    color: white;
+}
+  
+  .toggle-section-visible {
+    display: block;
+  }
+
+/* #toggleSection{
+    background-color: red;
+    z-index: 999;
+} */
+
+.popupSectionHidden {
+    display: none;
+  }
+  
+  .popupSectionVisible {
+    display: block;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: 30px;
+    right: 0;
+  }
 
 .popupContainer {
     display: none;

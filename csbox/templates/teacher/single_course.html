@@ -10,7 +10,43 @@
     <link rel="stylesheet" href="{%static 'css/teacher/single_course.css'%}"/>
 {%endblock link%}
 
-{%block script%}{%endblock script%}
+{%block script%}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var toggleButtons = document.getElementsByClassName("toggle-button");
+  var popupSections = document.getElementsByClassName("toggle-section");
+  console.log("hello")
+
+  // Attach event listeners to each toggle button
+  Array.from(toggleButtons).forEach(function(button) {
+    button.addEventListener("click", function(event) {
+      event.stopPropagation();
+      var popupId = button.getAttribute("data-popup");
+      var targetPopup = document.getElementById(popupId);
+
+      // Close any previously opened popup
+      Array.from(popupSections).forEach(function(section) {
+        if (section !== targetPopup) {
+          section.classList.remove("toggle-section-visible");
+        }
+      });
+
+      // Toggle the visibility of the clicked popup
+      targetPopup.classList.toggle("toggle-section-visible");
+    });
+  });
+
+  // Close the popup sections when clicking anywhere outside them
+  document.addEventListener("click", function(event) {
+    Array.from(popupSections).forEach(function(section) {
+      if (!section.contains(event.target)) {
+        section.classList.remove("toggle-section-visible");
+      }
+    });
+  });
+});
+</script>
+{%endblock script%}
 
 {%block content%}
     <div class="wraper">
@@ -63,7 +99,17 @@
                     <div class="comment-section"></div>
                     
                     <!-- toggle button section -->
-                    <button class="post-toggle-btn"><i class="fas fa-ellipsis-h"></i></button>
+                    <button class="toggle-button" data-popup="p{{post.id}}">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+
+                    <!-- toggle section -->
+                    <div class="toggle-section" id="p{{post.id}}">
+                        <div class="toggle-section-wraper">
+                            <button >Delete</button>
+                            <button >Edit</button>
+                        </div>
+                    </div>
                 </div>
                 {%endfor%}
             </div>
@@ -76,7 +122,7 @@
                 <form method="POST" enctype="multipart/form-data">
                     {%csrf_token%}
                     <div class="form-group">
-                        <textarea id="post_content" name="post_content" placeholder="write here..."></textarea>
+                        <textarea id="post_content" name="post_content" placeholder="write here..." required></textarea>
                         <ul class="file-list"></ul>
                     </div>
                     
