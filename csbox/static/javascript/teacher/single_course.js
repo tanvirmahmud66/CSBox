@@ -36,30 +36,31 @@ function handleFileSelect(event) {
 }
 
 
-document.querySelector(".post-deleteBtn").addEventListener("click", function() {
-  document.querySelector(".post-delPopup").style.display = "block";
-});
-
-// document.querySelector("close-del").addEventListener("click", function() {
-//   document.querySelector("post-del-popup").style.display = "none";
-// });
-
-
-// document.getElementById("post-edit-button").addEventListener("click", function() {
-//   document.querySelector("post-edit-popup").style.display = "block";
-// });
-
-// document.querySelector("close-edit").addEventListener("click", function() {
-//   document.querySelector("post-edit-popup").style.display = "none";
+// document.querySelector(".post-deleteBtn").addEventListener("click", function() {
+//   document.querySelector(".post-delPopup").style.display = "block";
 // });
 
 
 
 
 
-
-
-
+function del(){
+  var delButtons = document.getElementsByClassName("post-deleteBtn");
+  
+  Array.from(delButtons).forEach(function(button){
+    button.addEventListener("click", function(event){
+      event.stopPropagation();
+      var popID = button.getAttribute("data-popup");
+      var targetPop = document.getElementById(popID);
+      console.log(targetPop)
+      targetPop.style.display = "block";
+      var popSec = document.getElementById(popID);
+      popSec.addEventListener("click", function(){
+        popSec.style.display = "none";
+      })
+    });
+  });
+}
 
 
 

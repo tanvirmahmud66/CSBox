@@ -44,9 +44,9 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
-
-
 });
+
+
 </script>
 {%endblock script%}
 
@@ -101,21 +101,20 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="comment-section"></div>
                     
                     <!-- toggle 3 dots button -->
-                    <button class="toggle-button" data-popup="p{{post.id}}">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+                    <button class="toggle-button" onclick="del()" data-popup="p{{post.id}}"><i class="fas fa-ellipsis-h"></i></button>
 
                     <!-- popup section of 3 dots button and button for delete and edit -->
                     <div class="toggle-section" id="p{{post.id}}">
                         <div class="toggle-section-wraper">
-                            <button class="post-deleteBtn" >Delete</button>
+                            <button class="post-deleteBtn"  data-popup="d{{post.id}}">Delete</button>
                         </div>
                     </div>
 
                     <!-- delete post popup -->
-                    <div class="post-delPopup">
+                    <div class="post-delPopup" id="d{{post.id}}">
                         <div class="post-delContent">
                             Delete
+                            <button class="pop-close" data-popup="d{{post.id}}">cancel</button>
                         </div>
                     </div>
                 </div>

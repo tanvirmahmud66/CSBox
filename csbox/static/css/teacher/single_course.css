@@ -228,7 +228,7 @@
     z-index: 999;
 } */
 
-.popupSectionHidden {
+/* .popupSectionHidden {
     display: none;
   }
   
@@ -240,7 +240,7 @@
     position: absolute;
     top: 30px;
     right: 0;
-  }
+  } */
 
 .popupContainer {
     display: none;
