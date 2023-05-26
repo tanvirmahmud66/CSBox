@@ -21,17 +21,6 @@ document.getElementById("closeButton").addEventListener("click", function() {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
 const fileInput = document.getElementById('file-input');
 const fileList = document.querySelector('.file-list');
 
@@ -45,5 +34,33 @@ function handleFileSelect(event) {
     fileList.appendChild(listItem);
   }
 }
+
+
+document.querySelector(".post-deleteBtn").addEventListener("click", function() {
+  document.querySelector(".post-delPopup").style.display = "block";
+});
+
+// document.querySelector("close-del").addEventListener("click", function() {
+//   document.querySelector("post-del-popup").style.display = "none";
+// });
+
+
+// document.getElementById("post-edit-button").addEventListener("click", function() {
+//   document.querySelector("post-edit-popup").style.display = "block";
+// });
+
+// document.querySelector("close-edit").addEventListener("click", function() {
+//   document.querySelector("post-edit-popup").style.display = "none";
+// });
+
+
+
+
+
+
+
+
+
+
 
 

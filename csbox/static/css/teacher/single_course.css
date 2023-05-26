@@ -1,3 +1,5 @@
+
+
 .wraper{
     width: 100%;
     height: 93vh;
@@ -94,6 +96,7 @@
     overflow: scroll;
 }
 
+/* ================================================= */
 
 .post_section{
     position: absolute;
@@ -218,6 +221,8 @@
     display: block;
   }
 
+
+
 /* #toggleSection{
     background-color: red;
     z-index: 999;
@@ -261,6 +266,29 @@
     position: relative;
 }
 
+.post-delPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.787);
+}
+
+.post-delContent {
+    background-color: white;
+    width: 750px;
+    height: 440px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
 
 
 .popupContent h2 {
