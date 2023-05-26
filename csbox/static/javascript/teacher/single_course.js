@@ -52,12 +52,17 @@ function del(){
       event.stopPropagation();
       var popID = button.getAttribute("data-popup");
       var targetPop = document.getElementById(popID);
-      console.log(targetPop)
       targetPop.style.display = "block";
-      var popSec = document.getElementById(popID);
-      popSec.addEventListener("click", function(){
-        popSec.style.display = "none";
-      })
+
+      var closebtn = document.getElementsByClassName("pop-close");
+      Array.from(closebtn).forEach(function(sec){
+        sec.addEventListener("click", function(event){
+          event.stopPropagation();
+          var Id = sec.getAttribute("data-popup");
+          tar = document.getElementById(Id)
+          tar.style.display = "none";
+        });
+      });
     });
   });
 }

@@ -221,7 +221,39 @@
     display: block;
   }
 
+  .post-delPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.787);
+}
 
+.post-delContent {
+    background-color: white;
+    width: 780px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.post-delContent .head {
+    width: 100%;
+    font-weight: 400;
+    font-size:1.4rem;
+    text-align: center;
+    margin-bottom: 1.2rem;
+    background-color: red;
+    color: white;
+    padding: 10px 0;
+}
 
 /* #toggleSection{
     background-color: red;
@@ -254,30 +286,6 @@
 }
 
 .popupContent {
-    background-color: white;
-    width: 750px;
-    height: 440px;
-    padding: 20px;
-    border-radius: 5px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: relative;
-}
-
-.post-delPopup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    background-color: rgba(0, 0, 0, 0.787);
-}
-
-.post-delContent {
     background-color: white;
     width: 750px;
     height: 440px;
