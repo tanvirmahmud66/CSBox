@@ -45,8 +45,10 @@ function handleFileSelect(event) {
 
 
 function del(){
+  console.log("hello")
   var delButtons = document.getElementsByClassName("post-deleteBtn");
-  
+  var editButton = document.getElementsByClassName("post-editPopup");
+
   Array.from(delButtons).forEach(function(button){
     button.addEventListener("click", function(event){
       event.stopPropagation();
@@ -65,6 +67,27 @@ function del(){
       });
     });
   });
+
+
+  Array.from(editButton).forEach(function(button){
+    button.addEventListener("click", function(event){
+      event.stopPropagation();
+      var popID = button.getAttribute("data-popup");
+      var targetPop = document.getElementById(popID);
+      targetPop.style.display = "block";
+
+      var closebtn = document.getElementsByClassName("pop-closeEdit");
+      Array.from(closebtn).forEach(function(sec){
+        sec.addEventListener("click", function(event){
+          event.stopPropagation();
+          var Id = sec.getAttribute("data-popup");
+          tar = document.getElementById(Id)
+          tar.style.display = "none";
+        })
+      })
+    })
+  });
+
 }
 
 

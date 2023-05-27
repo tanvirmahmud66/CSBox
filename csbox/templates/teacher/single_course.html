@@ -92,8 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <span class="bold">{{post.session.batch}}-{{post.session.section.section}}</span>
                             <span class="tiny"> - {{post.session.semester}}</span>
                         </h2>
-                        <p class="time">{{post.created | timesince}} ago</p>   
-                        <p class="date">{{post.created.date}}</p>
+                        <p class="time">{{post.created | timesince}} ago</p>  
                     </div>
                     <div class="post-body">
                         <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
@@ -107,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="toggle-section" id="p{{post.id}}">
                         <div class="toggle-section-wraper">
                             <button class="post-deleteBtn"  data-popup="d{{post.id}}">Delete</button>
+                            <button class="post-editBtn" data-popup="e{{post.id}}">Edit</button>
                         </div>
                     </div>
 
@@ -125,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <span class="tiny"> - {{post.session.semester}}</span>
                                     </h2>
                                     <p class="time">{{post.created | timesince}} ago</p>   
-                                    <p class="date">{{post.created.date}}</p>
                                 </div>
                                 <div class="post-body">
                                     <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
@@ -133,6 +132,15 @@ document.addEventListener("DOMContentLoaded", function() {
                             </div>
                             <button class="pop-close" data-popup="d{{post.id}}">Cancel</button>
                             <a class="del-confirm-btn" href="{%url 'faculty-del-post' post.session.sessionName post.session.id post.id%}">Confirm Delete</a>
+                        </div>
+                    </div>
+
+                    <!-- edit post popup -->
+                    <div class="post-editPopup" id="e{{post.id}}">
+                        <div class="post-editContent">
+                            <h2 class="edit-head"> Edit Post</h2>
+                            <button class="pop-closeEdit" data-popup="e{{post.id}}">Close</button>
+                            <a class="del-confirm-btn" href="">Edit</a>
                         </div>
                     </div>
                 </div>
