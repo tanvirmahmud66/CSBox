@@ -412,6 +412,11 @@ def faculty_single_course(request, session_name,pk):
         "files": all_files,
     })
 
+#------------ faculty delete post -------------
+def faculty_del_post(request, session_name, session_id, pk):
+    del_post = PostDB.objects.get(id=pk)
+    del_post.delete()
+    return redirect("fuculty_single_course", session_name, session_id)
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
 def student_single_course(request, pk):

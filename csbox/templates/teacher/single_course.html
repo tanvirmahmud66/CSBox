@@ -131,7 +131,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
                                 </div>
                             </div>
-                            <button class="pop-close" data-popup="d{{post.id}}">cancel</button>
+                            <button class="pop-close" data-popup="d{{post.id}}">Cancel</button>
+                            <a class="del-confirm-btn" href="{%url 'faculty-del-post' post.session.sessionName post.session.id post.id%}">Confirm Delete</a>
                         </div>
                     </div>
                 </div>

@@ -255,6 +255,32 @@
     padding: 10px 0;
 }
 
+.pop-close{
+    padding: 12px 10px;
+    background: none;
+    border: none;
+    background-color:#10B0A7;
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.del-confirm-btn{
+    text-decoration: none;
+    padding: 10px 10px;
+    background: none;
+    border: none;
+    background-color: rgb(246, 56, 56);
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.del-confirm-btn:hover{
+    background-color: red;
+    color: white;
+}
+
 /* #toggleSection{
     background-color: red;
     z-index: 999;

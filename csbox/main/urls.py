@@ -25,4 +25,7 @@ urlpatterns = [
     path('single_course/<str:session_name>-<int:pk>/', views.single_course, name='single_course'),
     path('faculty/courses/<str:session_name>-<int:pk>/', views.faculty_single_course, name='fuculty_single_course'),
     path('student/courses/<str:session_name>-<int:pk>/', views.student_single_course, name='student_single_course'),
+
+    # CRUD operation
+    path('faculty/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.faculty_del_post, name='faculty-del-post'),
 ]
