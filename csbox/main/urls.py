@@ -18,6 +18,11 @@ urlpatterns = [
     path('home/faculty/', views.teacher_home, name='teacher_home'),
     path('home/student/', views.student_home, name='student_home'),
 
+    # profile page
+    path('check_profile/<int:user_id>/', views.check_profile, name='check_profile'),
+    path('faculty/profile/', views.teacher_profile, name='teacher_profile'),
+    path('student/profile/', views.student_profile, name='student_profile'),
+
     path('courses', views.courses, name='courses'),
     path('faculty/courses/', views.teacher_courses, name='teacher_courses'),
     path('student/courses/', views.student_courses, name='student_courses'),
@@ -28,4 +33,8 @@ urlpatterns = [
 
     # CRUD operation
     path('faculty/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.faculty_del_post, name='faculty-del-post'),
+
+
+    #home single post section
+    path('home/single_post/<int:post_id>/', views.single_post, name='single_post'),
 ]

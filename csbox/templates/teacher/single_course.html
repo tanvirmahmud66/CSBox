@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="comment-section"></div>
                     
                     <!-- toggle 3 dots button -->
-                    <button class="toggle-button" onclick="del()" data-popup="p{{post.id}}"><i class="fas fa-ellipsis-h"></i></button>
+                    <button class="toggle-button" onclick="del(); edit()" data-popup="p{{post.id}}"><i class="fas fa-ellipsis-h"></i></button>
 
                     <!-- popup section of 3 dots button and button for delete and edit -->
                     <div class="toggle-section" id="p{{post.id}}">
@@ -139,8 +139,28 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="post-editPopup" id="e{{post.id}}">
                         <div class="post-editContent">
                             <h2 class="edit-head"> Edit Post</h2>
-                            <button class="pop-closeEdit" data-popup="e{{post.id}}">Close</button>
-                            <a class="del-confirm-btn" href="">Edit</a>
+                            <form method="GET">
+                                {%csrf_token%}
+                                <input value="{{post.id}}" style="display: none;" name="post_id">
+                                <div class="form-group">
+                                    <textarea id="post_content" name="edit_post_content" required>{{post.postBody}}</textarea>
+                                </div>
+                                <div class="group">
+                                    <div class="checkbox-container">
+                                        {%if post.is_announcement%}
+                                            <input type="checkbox" id="announcement" name="edit-announcement" value="True" checked>
+                                            <label for="announcement" class="checkbox-label">Announcement</label>
+                                        {%else%}
+                                            <input type="checkbox" id="announcement" name="edit-announcement" value="True">
+                                            <label for="announcement" class="checkbox-label">Announcement</label>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="button-group">
+                                    <button class="pop-closeEdit" data-popup="e{{post.id}}">Cancel</button>
+                                    <button type="submit"  class="edit-btn" href="">Edit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

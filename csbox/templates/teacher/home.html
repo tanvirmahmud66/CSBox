@@ -14,6 +14,41 @@
 
 {%block content%}
     
-    <h1>This is Teacher Home page</h1>
+    <div class="wraper">
+        <h1 class="announcement-head">Announcement</h1>
+        <div class="announcement">
+            <div class="announcement-content">
+                <ul class="list">
+                    {%for each in announcement%}
+                        <a class="each_list_link" href="{%url 'single_post' each.id %}">
+                            <li class="list_item">
+                                <p class="list_head"> <span class="bold">{{each.session.sessionName}}</span> batch <span class="bold">{{each.session.section.batch}}-{{each.session.section.section}}, {{each.session.semester}}</span></p>
+                                <p class="list_post">{{each.postBody | slice:"0:40" }}...</p>
+                            </li>
+                        </a>
+
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+        <div class="post_section">
+            <div class="post-content">
+                {%for each in normal_posts%}
+                    <a href="{%url 'single_post' each.id%}">
+                        <div class="post-card">
+                            <div class="post-head">
+                                <span class="bold">{{each.creator.first_name}} {{each.creator.last_name}}</span> 
+                                post to
+                                <span class="bold">{{each.session.sessionName}}</span>
+                                batch
+                                <span class="bold">{{each.session.section.batch}} - {{each.session.section.section}}, {{each.session.semester}}</span>
+                            </div>
+                            <p class="post-body">{{each.postBody | slice:"0:78"}}...</p>
+                        </div>
+                    </a>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
     
 {%endblock content%}

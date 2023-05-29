@@ -1,0 +1,40 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    {{post.postBody}} | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/single_post.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    
+    <div class="wraper">
+        <div {%if post.is_announcement%} class="post-card-red"{%else%} class="post-card"{%endif%}>
+            <div class="card-heading-warper">
+                <h2 class="post-heading">
+                    <span class="bold">{{post.creator.first_name}} {{post.creator.last_name}}</span>
+                    {%if post.is_announcement%}Announce to{%else%}Post to{%endif%}
+                    <span class="bold">{{post.session}}</span>
+                    batch
+                    <span class="bold">{{post.session.batch}}-{{post.session.section.section}}</span>
+                    <span class="tiny"> - {{post.session.semester}}</span>
+                </h2>
+                <p class="time">{{post.created | timesince}} ago</p>  
+            </div>
+            <div class="post-body">
+                <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
+            </div>
+            <div class="comment-section"></div>
+        </div>
+        <a class="back-url" href="{{request.META.HTTP_REFERER}}">
+            <i class="fas fa-arrow-left fa-2x"></i>
+        </a>
+    </div>
+    
+{%endblock content%}

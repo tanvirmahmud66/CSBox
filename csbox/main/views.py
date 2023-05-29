@@ -15,6 +15,8 @@ from django.contrib.auth.decorators import login_required
 #======================================================== Sign In
 
 def signin(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method=="POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -64,6 +66,8 @@ def logout_page(request):
 #======================================================== Registration (Teacher)
 
 def teacher_registration(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == "POST":
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
@@ -161,6 +165,8 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Registration (student)
 
 def student_registration(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == "POST":
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
@@ -280,6 +286,7 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
 
 
 #================================================================== Home
+@login_required(login_url='signin')
 def home(request):
     verify_user = Verification.objects.get(user=request.user)
     if verify_user.is_teacher:
@@ -287,15 +294,51 @@ def home(request):
     else:
         return redirect('student_home')
 
+
+
 #================================================================== Teacher Home page
+@login_required(login_url='signin')
 def teacher_home(request):
-    return render(request, "teacher/home.html",)
+    normal_posts = PostDB.objects.filter(creator=request.user, is_announcement=False)
+    announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
+    return render(request, "teacher/home.html",{
+        "normal_posts": normal_posts,
+        "announcement": announcement,
+    })
+
+#--------------------------------------------------------- Profile
+@login_required(login_url='signin')
+def check_profile(request, user_id):
+    user_verify = Verification.objects.get(id=user_id)
+    if user_verify.is_teacher:
+        return redirect('teacher_profile')
+    else:
+        return redirect('student_profile')
+
+
+#========================================================== Teacher Profile
+@login_required(login_url='signin')
+def teacher_profile(request):
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    return render(request, 'teacher/teacher_profile.html', {
+        "teacher_profile": teacher_profile,
+    })
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Profile
+@login_required(login_url='signin')
+def student_profile(request, user_id):
+    pass
+
+
+
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Home page
+@login_required(login_url='signin')
 def student_home(request):
     return render(request, "student/home.html")
 
 #================================================================== Courses
+@login_required(login_url='signin')
 def courses(request):
     verify_user = Verification.objects.get(user=request.user)
     if verify_user.is_teacher:
@@ -304,6 +347,7 @@ def courses(request):
         return redirect('student_courses')
     
 #================================================================== Teacher Courses
+@login_required(login_url='signin')
 def teacher_courses(request):
     if request.method=="POST":
         sessionName = request.POST['sessionName']
@@ -362,11 +406,13 @@ def teacher_courses(request):
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Courses
+@login_required(login_url='signin')
 def student_courses(request):
     return render(request, 'student/all_courses.html')
 
 
 #================================================================== Single course
+@login_required(login_url='signin')
 def single_course(request, session_name,pk):
     verify_user = Verification.objects.get(user=request.user)
     if verify_user.is_teacher:
@@ -375,11 +421,25 @@ def single_course(request, session_name,pk):
         return redirect('student_single_course', session_name,pk)
 
 #=================================================================== Faculty Single Course
+@login_required(login_url='signin')
 def faculty_single_course(request, session_name,pk):
     course_obj = SessionData.objects.get(id=pk)
     verify_obj = Verification.objects.get(user=request.user)
     all_post = PostDB.objects.filter(session=course_obj)
     all_files = FileDatabase.objects.filter(sessionId=pk)
+    if request.method=="GET":
+        post_id_edit = request.GET.get('post_id')
+        edit_post_body = request.GET.get('edit_post_content')
+        edit_announcement = request.GET.get('edit-announcement')
+        try:
+            editpost_postdb = PostDB.objects.get(id=post_id_edit)
+            if editpost_postdb is not None:
+                editpost_postdb.postBody = edit_post_body
+                editpost_postdb.is_announcement = edit_announcement
+                editpost_postdb.save()
+        except Exception as e:
+            print(e)
+        
     if request.method == "POST":
         postbody = request.POST['post_content']
         files = request.FILES.getlist('files')
@@ -418,7 +478,17 @@ def faculty_del_post(request, session_name, session_id, pk):
     del_post.delete()
     return redirect("fuculty_single_course", session_name, session_id)
 
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
+# @login_required(login_url='signin')
 def student_single_course(request, pk):
     pass
 
+
+
+#@@@@@@@@@@@@@@@@@@@@@ single post page @@@@@@@@@@@@@@@@@@@@@@@@@@@
+def single_post(request, post_id):
+    target_post = PostDB.objects.get(id=post_id)
+    return render(request, 'single_post.html', {
+        "post": target_post,
+    })

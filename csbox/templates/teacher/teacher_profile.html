@@ -1,0 +1,38 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    {{request.user.first_name}} {{request.user.last_name}} | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/teacher/teacher_profile.css'%}"/>
+{%endblock link%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    
+    <div class="wraper">
+        <div class="cover_photo">
+            this is cover photo section
+        </div>
+        <div class="profile_head">
+            <div class="profile_avatar">avatar</div>
+            <div class="profile_naming">
+                <h3>{{teacher_profile.user.first_name}} {{teacher_profile.user.last_name}}</h3>
+                <p>{{teacher.bio}}</p>
+            </div>
+        </div>
+        <div class="personal_info">
+            <p class="each"><span class="bold">Works at: </span>{{teacher_profile.works_at}}</p>
+            <p class="each"><span class="bold">Department: </span>{{teacher_profile.department}}</p>
+            <p class="each"><span class="bold">Designation: </span>{{teacher_profile.designation}}</p>
+            <p class="each"><span class="bold">Studied at: </span>{{teacher_profile.studied_at}}</p>
+            <p class="each"><span class="bold">Program: </span>{{teacher_profile.program}}</p>
+            <p class="each"><span class="bold">From: </span>{{teacher_profile.address}}</p>
+        </div>   
+    </div>
+    
+{%endblock content%}

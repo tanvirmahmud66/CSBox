@@ -91,6 +91,11 @@ class TeacherProfile(models.Model):
     teacher_id = models.CharField(max_length=50)
     designation = models.CharField(max_length=100)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    works_at = models.CharField(max_length=150, null=True, blank=True, default="Stamford University Bangladesh")
+    bio = models.CharField(max_length=250, null=True, blank=True)
+    studied_at = models.CharField(max_length=250, null=True, blank=True)
+    program = models.CharField(max_length=250, null=True, blank=True)
+    address = models.CharField(max_length=250, null=True, blank=True)
 
     class Meta:
         verbose_name = 'TeacherProfile'
