@@ -15,8 +15,8 @@ urlpatterns = [
     path('<str:username>/<str:student_id>/<int:dept_id>/<int:batch_id>/<int:section_id>/<str:token>/verified/', views.student_verified, name='student-verified'),
 
     path('home/', views.home, name='home'),
-    path('home/faculty/', views.teacher_home, name='teacher_home'),
-    path('home/student/', views.student_home, name='student_home'),
+    path('faculty/home/', views.teacher_home, name='teacher_home'),
+    path('student/home/', views.student_home, name='student_home'),
 
     # profile page
     path('check_profile/<int:user_id>/', views.check_profile, name='check_profile'),

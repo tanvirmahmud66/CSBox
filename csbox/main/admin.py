@@ -30,7 +30,7 @@ class VerificationView(admin.ModelAdmin):
 
 
 class TeacherProfileView(admin.ModelAdmin):
-    list_display = ('user', 'user_id', 'teacher_id', 'designation', 'department', 'works_at', 'bio', 'studied_at', 'program', 'address')
+    list_display = ('user', 'user_id', 'teacher_id', 'designation', 'department', 'works_at', 'bio', 'studied_at', 'program', 'address', 'profile_pic', 'cover_pic')
 
 
 class StudentProfileView(admin.ModelAdmin):

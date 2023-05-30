@@ -320,6 +320,17 @@ def check_profile(request, user_id):
 @login_required(login_url='signin')
 def teacher_profile(request):
     teacher_profile = TeacherProfile.objects.get(user=request.user)
+    if request.method=="POST":
+        bio = request.POST.get('bio')
+        studied_at = request.POST.get('studied_at')
+        program = request.POST.get('program')
+        address = request.POST.get('address')
+        teacher_profile.bio = bio
+        teacher_profile.program = program
+        teacher_profile.studied_at = studied_at
+        teacher_profile.address = address
+        teacher_profile.save()
+        return redirect('check_profile', request.user)
     return render(request, 'teacher/teacher_profile.html', {
         "teacher_profile": teacher_profile,
     })

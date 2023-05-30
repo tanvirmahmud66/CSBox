@@ -22,17 +22,61 @@
             <div class="profile_avatar">avatar</div>
             <div class="profile_naming">
                 <h3>{{teacher_profile.user.first_name}} {{teacher_profile.user.last_name}}</h3>
-                <p>{{teacher.bio}}</p>
+                {%if teacher_profile.bio%}
+                <p>{{teacher_profile.bio}}</p>
+                {%endif%}
             </div>
         </div>
         <div class="personal_info">
             <p class="each"><span class="bold">Works at: </span>{{teacher_profile.works_at}}</p>
             <p class="each"><span class="bold">Department: </span>{{teacher_profile.department}}</p>
             <p class="each"><span class="bold">Designation: </span>{{teacher_profile.designation}}</p>
+            {%if teacher_profile.studied_at%}
             <p class="each"><span class="bold">Studied at: </span>{{teacher_profile.studied_at}}</p>
+            {%endif%}
+            {%if teacher_profile.program%}
             <p class="each"><span class="bold">Program: </span>{{teacher_profile.program}}</p>
+            {%endif%}
+            {%if teacher_profile.address%}
             <p class="each"><span class="bold">From: </span>{{teacher_profile.address}}</p>
+            {%endif%}
+            <button class="edit-btn" id="popupButton">Edit Profile</button>
         </div>   
+    </div>
+    <!-- Popup Form section -->
+    <div class="popupContainer" id="popupContainer">
+        <div class="popupContent" id="popupContent">
+            <form method="POST">
+                {%csrf_token%}
+                <div class="form-group">
+                  <input type="text" id="bio" name="bio" placeholder="Bio" {%if teacher_profile.bio%} value="{{teacher_profile.bio}}" {%endif%}>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="studied_at" name="studied_at" placeholder="Studied At" {%if teacher_profile.studied_at%} value="{{teacher_profile.studied_at}}" {%endif%}>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="program" name="program" placeholder="Program" {%if teacher_profile.program%} value="{{teacher_profile.program}}" {%endif%}>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="address" name="address" placeholder="From" {%if teacher_profile.address%} value="{{teacher_profile.address}}" {%endif%}>
+                </div>
+                <div class="form-group">
+                    <label for="image1">Select Porfile Picture:</label>
+                    <input type="file" id="image1" name="image1" alt="profile pic">
+                  </div>
+                  <div class="form-group">
+                    <label for="image2">Set a Cover photo:</label>
+                    <input type="file" id="image2" name="image2" alt="cover pic">
+                  </div>
+                <div class="form-group">
+                  <button type="submit">Save</button>
+                </div>
+              </form>
+            <button id="closeButton" class="closeButton"><i class="fas fa-times"></i></button>
+        </div>
     </div>
     
 {%endblock content%}
+{%block downscript%} 
+    <script src="{%static 'javascript/teacher/teacher_profile.js'%}"></script>
+{%endblock downscript%}

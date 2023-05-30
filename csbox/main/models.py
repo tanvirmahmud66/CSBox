@@ -96,6 +96,8 @@ class TeacherProfile(models.Model):
     studied_at = models.CharField(max_length=250, null=True, blank=True)
     program = models.CharField(max_length=250, null=True, blank=True)
     address = models.CharField(max_length=250, null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='teacher_profilePic/', null=True, blank=True)
+    cover_pic = models.ImageField(upload_to='teacher_coverPic/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'TeacherProfile'
