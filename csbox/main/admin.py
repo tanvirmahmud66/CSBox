@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department, Batch, Section, StudentId, Semester, Verification, TeacherProfile, StudentsProfile, SessionData, PostDB, CommentDB, FileDatabase
+from .models import Department, Batch, Section, Semester, Verification, TeacherProfile, StudentsProfile, SessionData, PostDB, CommentDB, FileDatabase
 
 
 # Register your models here.
@@ -13,11 +13,6 @@ class BatchView(admin.ModelAdmin):
 
 class SectionView(admin.ModelAdmin):
     list_display = ('id', 'batch', 'section', 'department')
-
-
-
-class StudentIdView(admin.ModelAdmin):
-    list_display = ('id', 'department', 'batch', 'studentId')
 
 
 class SemesterView(admin.ModelAdmin):
@@ -60,7 +55,6 @@ admin.site.register(Section, SectionView)
 admin.site.register(Verification, VerificationView)
 admin.site.register(TeacherProfile, TeacherProfileView)
 admin.site.register(StudentsProfile, StudentProfileView)
-admin.site.register(StudentId, StudentIdView)
 admin.site.register(Semester, SemesterView)
 admin.site.register(SessionData, SessionDataView)
 admin.site.register(PostDB, PostDBView)

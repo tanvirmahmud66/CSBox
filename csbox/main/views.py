@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, StudentId, Semester, SessionData, PostDB, CommentDB, FileDatabase
+from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, Semester, SessionData, PostDB, CommentDB, FileDatabase
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -262,8 +262,6 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
     department = Department.objects.get(id=dept_id)
     batch = Batch.objects.get(id=batch_id)
     section = Section.objects.get(id=section_id)
-    print(username, student_id, dept_id, batch_id, section_id, token)
-    print(department, batch, section)
     new_student = StudentsProfile.objects.create(
         user=user_model,
         userId=user_model.id,
@@ -272,11 +270,6 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
         batch = batch,
         section=section.section
     )
-    student_listing = StudentId.objects.create(
-        department = department, 
-        StudentId = student_id
-    )
-    student_listing.save()
     new_student.save()
     return render(request, "notification.html", {
         "titile": "Email Confirmed",
@@ -308,15 +301,18 @@ def teacher_home(request):
 
 #--------------------------------------------------------- Profile
 @login_required(login_url='signin')
-def check_profile(request, user_id):
-    user_verify = Verification.objects.get(id=user_id)
-    if user_verify.is_teacher:
-        return redirect('teacher_profile')
-    else:
-        return redirect('student_profile')
+def check_profile(request):
+    try:
+        user_verify = Verification.objects.get(user=request.user)
+        if user_verify.is_teacher:
+            return redirect('teacher_profile')
+        else:
+            return redirect('student_profile')
+    except Exception as e:
+        print(e)
 
 
-#========================================================== Teacher Profile
+#======================================================================= Teacher Profile
 @login_required(login_url='signin')
 def teacher_profile(request):
     teacher_profile = TeacherProfile.objects.get(user=request.user)

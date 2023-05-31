@@ -41,18 +41,6 @@ class Section(models.Model):
 
 
 
-#=========================================================================== Student ID
-class StudentId(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
-    studentId = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = 'Student_ID'
-        verbose_name_plural = 'Student_ID'
-    
-    def __str__(self):
-        return self.studentId
 
 
 #=========================================================================== Semester Name
