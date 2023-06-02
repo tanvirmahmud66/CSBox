@@ -323,10 +323,16 @@ def teacher_profile(request):
         studied_at = request.POST.get('studied_at')
         program = request.POST.get('program')
         address = request.POST.get('address')
+        profile_pic = request.FILES.get('profile-pic')
+        cover_pic = request.FILES.get('cover-pic')
         teacher_profile.bio = bio
         teacher_profile.program = program
         teacher_profile.studied_at = studied_at
         teacher_profile.address = address
+        if profile_pic:
+            teacher_profile.profile_pic = profile_pic
+        if cover_pic:
+            teacher_profile.cover_pic = cover_pic
         teacher_profile.save()
         return redirect('check_profile')
     return render(request, 'teacher/teacher_profile.html', {
