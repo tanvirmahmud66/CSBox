@@ -103,6 +103,12 @@ class StudentsProfile(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     batch = models.ForeignKey(Batch, on_delete=models.CASCADE, null=False)
     section = models.CharField(max_length=1)
+    school = models.CharField(max_length=255 ,null=True, blank=True)
+    college = models.CharField(max_length=255 ,null=True, blank=True)
+    address = models.CharField(max_length=255 ,null=True, blank=True)
+    bio = models.CharField(max_length=255 ,null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='student_profilePic/', null=True, blank=True)
+    cover_pic = models.ImageField(upload_to='student_coverPic/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'StudentProfile'

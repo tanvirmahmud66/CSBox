@@ -29,7 +29,7 @@ class TeacherProfileView(admin.ModelAdmin):
 
 
 class StudentProfileView(admin.ModelAdmin):
-    list_display = ('user', 'user_id', 'student_id', 'department', 'batch', 'section')
+    list_display = ('user', 'user_id', 'student_id', 'department', 'batch', 'section', 'school', 'college', 'address', 'bio', 'profile_pic', 'cover_pic')
 
 
 class SessionDataView(admin.ModelAdmin):

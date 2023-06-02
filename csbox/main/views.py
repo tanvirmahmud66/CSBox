@@ -333,16 +333,32 @@ def teacher_profile(request):
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Profile
 @login_required(login_url='signin')
-def student_profile(request, user_id):
-    pass
-
-
+def student_profile(request):
+    student_profile = StudentsProfile.objects.get(user=request.user)
+    if request.method == "POST":
+        bio = request.POST.get('bio')
+        school = request.POST.get('school')
+        college = request.POST.get('college')
+        address = request.POST.get('address')
+        student_profile.bio = bio
+        student_profile.school = school
+        student_profile.college = college
+        student_profile.address = address
+        student_profile.save()
+    return render(request, 'student/student_profile.html', {
+        "student": True,
+        "student_profile": student_profile,
+    })
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Home page
 @login_required(login_url='signin')
 def student_home(request):
-    return render(request, "student/home.html")
+    return render(request, "student/home.html", {
+        "student": True,
+    })
+
+
 
 #================================================================== Courses
 @login_required(login_url='signin')
