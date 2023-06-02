@@ -6,8 +6,21 @@
 .cover_photo{
     width: 100%;
     height: 27%;
-    background-color: gray;
+    overflow: hidden;
     position: relative;
+}
+.cover_photo img{
+    width: 100%;
+}
+.cover_photo .no_cover{
+    width: 100%;
+    height: 100%;
+    background-color: gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: rgba(169, 169, 169, 0.718);
 }
 .profile_head{
     position: absolute;
@@ -28,7 +41,9 @@
     align-items: center;
     overflow: hidden;
 }
-
+.profile_avatar img{
+    width: 100%;
+}
 .profile_naming h3{
     font-size: 1.8rem;
     font-weight: 500;

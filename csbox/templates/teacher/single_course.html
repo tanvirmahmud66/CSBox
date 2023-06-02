@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="{%static 'css/teacher/single_course.css'%}"/>
 {%endblock link%}
 
+{%block navImg%}
+    {%if teacher_profile.profile_pic%}
+        <img src="{{teacher_profile.profile_pic.url}}" alt="Profile Pic">
+    {%else%}
+        <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+    {%endif%}
+{%endblock navImg%}
+
 {%block script%}
 <script>
 document.addEventListener("DOMContentLoaded", function() {

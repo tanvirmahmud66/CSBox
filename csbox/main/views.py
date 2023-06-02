@@ -294,9 +294,11 @@ def home(request):
 def teacher_home(request):
     normal_posts = PostDB.objects.filter(creator=request.user, is_announcement=False)
     announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
     return render(request, "teacher/home.html",{
         "normal_posts": normal_posts,
         "announcement": announcement,
+        "teacher_profile": teacher_profile,
     })
 
 #--------------------------------------------------------- Profile
@@ -326,7 +328,7 @@ def teacher_profile(request):
         teacher_profile.studied_at = studied_at
         teacher_profile.address = address
         teacher_profile.save()
-        return redirect('check_profile', request.user)
+        return redirect('check_profile')
     return render(request, 'teacher/teacher_profile.html', {
         "teacher_profile": teacher_profile,
     })
@@ -340,10 +342,16 @@ def student_profile(request):
         school = request.POST.get('school')
         college = request.POST.get('college')
         address = request.POST.get('address')
+        profile_pic = request.FILES.get('profile-pic')
+        cover_pic = request.FILES.get('cover-pic')
         student_profile.bio = bio
         student_profile.school = school
         student_profile.college = college
         student_profile.address = address
+        if profile_pic:
+            student_profile.profile_pic = profile_pic
+        if cover_pic:
+            student_profile.cover_pic = cover_pic
         student_profile.save()
     return render(request, 'student/student_profile.html', {
         "student": True,
@@ -381,11 +389,6 @@ def teacher_courses(request):
         section = section_model
         sem = request.POST['semester']
         semester = Semester.objects.get(id=sem)
-        print("Course Name: ", sessionName)
-        print("Department: ", department)
-        print("Batch: ", batch)
-        print("Section: ", section.section)
-        print("Semester: ", semester)
         teacher_id = TeacherProfile.objects.get(user=request.user)
         new_session = SessionData.objects.create(
             sessionName=sessionName,
@@ -406,7 +409,9 @@ def teacher_courses(request):
             semester=q
         )
         sem = Semester.objects.get(id=q)
+        teacher_profile = TeacherProfile.objects.get(user=request.user)
         return render(request, 'teacher/all_courses.html', {
+            "teacher_profile": teacher_profile,
             "departments": departments,
             "batches": batches, 
             "semesters": semesters,
@@ -418,8 +423,9 @@ def teacher_courses(request):
            faculty__user=request.user,
            semester=semesters[0] 
         )
-        
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
     return render(request, 'teacher/all_courses.html', {
+        "teacher_profile": teacher_profile,
         "departments": departments,
         "batches": batches, 
         "semesters": semesters,
@@ -450,6 +456,8 @@ def faculty_single_course(request, session_name,pk):
     verify_obj = Verification.objects.get(user=request.user)
     all_post = PostDB.objects.filter(session=course_obj)
     all_files = FileDatabase.objects.filter(sessionId=pk)
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    print(teacher_profile)
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -490,6 +498,7 @@ def faculty_single_course(request, session_name,pk):
                 file_upload.save()
             return redirect("fuculty_single_course", session_name, pk)
     return render(request, 'teacher/single_course.html', {
+        "teacher_profile": teacher_profile,
         "course_obj": course_obj,
         "posts": all_post,
         "files": all_files,

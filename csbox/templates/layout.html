@@ -57,7 +57,9 @@
         {%if request.user.is_authenticated%}
             <div>
                 <div class="dropdown-btn_div" onclick="toggleDropdown()">
-                    <div class="avatar"></div>
+                    <div class="avatar">
+                        {%block navImg%}{%endblock navImg%}
+                    </div>
                     {{request.user.first_name}} {{request.user.last_name}}
                 </div>
                 <div class="dropdown-content" id="myDropdown">

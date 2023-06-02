@@ -9,17 +9,35 @@
 {%block link%} 
     <link rel="stylesheet" href="{%static 'css/teacher/teacher_profile.css'%}"/>
 {%endblock link%}
-
+{%block navImg%}
+    {%if teacher_profile.profile_pic%}
+        <img src="{{teacher_profile.profile_pic.url}}" alt="Profile Pic">
+    {%else%}
+        <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+    {%endif%}
+{%endblock navImg%}
 {%block script%}{%endblock script%}
 
 {%block content%}
     
     <div class="wraper">
         <div class="cover_photo">
-            this is cover photo section
+            {%if student_profile.cover_pic%}
+                <img src="{{teacher_profile.cover_pic.url}}" alt="Cover photo">
+            {%else%}
+                <div class="no_cover">
+                    No Cover Photo
+                </div>
+            {%endif%}
         </div>
         <div class="profile_head">
-            <div class="profile_avatar">avatar</div>
+            <div class="profile_avatar">
+                {%if teacher_profile.profile_pic%}
+                    <img src="{{student_profile.profile_pic.url}}" alt="Profile pic">
+                {%else%}
+                    <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+                {%endif%}
+            </div>
             <div class="profile_naming">
                 <h3>{{teacher_profile.user.first_name}} {{teacher_profile.user.last_name}}</h3>
                 {%if teacher_profile.bio%}

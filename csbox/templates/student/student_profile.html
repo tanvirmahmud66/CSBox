@@ -9,17 +9,35 @@
 {%block link%} 
     <link rel="stylesheet" href="{%static 'css/student/student_profile.css'%}"/>
 {%endblock link%}
-
+{%block navImg%}
+    {%if student_profile.profile_pic%}
+        <img src="{{student_profile.profile_pic.url}}" alt="Profile Pic">
+    {%else%}
+        <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+    {%endif%}
+{%endblock navImg%}
 {%block script%}{%endblock script%}
 
 {%block content%}
     
 <div class="wraper">
     <div class="cover_photo">
-        this is cover photo section
+        {%if student_profile.cover_pic%}
+            <img src="{{student_profile.cover_pic.url}}" alt="Cover photo">
+        {%else%}
+            <div class="no_cover">
+                No Cover Photo
+            </div>
+        {%endif%}
     </div>
     <div class="profile_head">
-        <div class="profile_avatar">avatar</div>
+        <div class="profile_avatar">
+            {%if student_profile.profile_pic%}
+                <img src="{{student_profile.profile_pic.url}}" alt="Profile pic">
+            {%else%}
+                <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+            {%endif%}
+        </div>
         <div class="profile_naming">
             <h3>{{student_profile.user.first_name}} {{student_profile.user.last_name}}</h3>
             {%if student_profile.bio%}
@@ -50,7 +68,7 @@
 <!-- Popup Form section -->
 <div class="popupContainer" id="popupContainer">
     <div class="popupContent" id="popupContent">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {%csrf_token%}
             <div class="form-group">
               <input type="text" id="bio" name="bio" placeholder="Bio" {%if student_profile.bio%} value="{{student_profile.bio}}" {%endif%}>
@@ -65,12 +83,12 @@
                 <input type="text" id="address" name="address" placeholder="From" {%if student_profile.address%} value="{{student_profile.address}}" {%endif%}>
             </div>
             <div class="form-group">
-                <label for="image1">Select Porfile Picture:</label>
-                <input type="file" id="image1" name="image1" alt="profile pic">
+                <label for="profile-pic">Select Porfile Picture:</label>
+                <input type="file" id="profile-pic" name="profile-pic" alt="profile pic">
               </div>
               <div class="form-group">
-                <label for="image2">Set a Cover photo:</label>
-                <input type="file" id="image2" name="image2" alt="cover pic">
+                <label for="cover-pic">Set a Cover photo:</label>
+                <input type="file" id="cover-pic" name="cover-pic" alt="cover pic">
               </div>
             <div class="form-group">
               <button type="submit">Save</button>

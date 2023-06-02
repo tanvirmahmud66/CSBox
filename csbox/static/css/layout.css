@@ -68,8 +68,10 @@
   height: 25px;
   margin-right: 10px;
   border-radius: 50%;
-  background-color: red;
   overflow: hidden;
+}
+.avatar img{
+  width: 100%;
 }
 .dropdown-btn_div {
   display: flex;
