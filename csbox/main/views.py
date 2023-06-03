@@ -1,4 +1,6 @@
 import uuid
+import secrets
+import string
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
@@ -374,6 +376,19 @@ def student_home(request):
 
 
 
+#-------------------------- Token generate ----------------------
+token_set = set()
+def generate_token(length):
+    characters = string.ascii_letters + string.digits
+    token = ''.join(secrets.choice(characters) for _ in range(length))
+    length = len(token_set)
+    token_set.add(token)
+    if len(token_set)==length+1:
+        return token
+    else:
+        generate_token(5)
+
+
 #================================================================== Courses
 @login_required(login_url='signin')
 def courses(request):
@@ -396,15 +411,18 @@ def teacher_courses(request):
         sem = request.POST['semester']
         semester = Semester.objects.get(id=sem)
         teacher_id = TeacherProfile.objects.get(user=request.user)
+        new_token = generate_token(5)
         new_session = SessionData.objects.create(
             sessionName=sessionName,
             department=department,
             batch=batch,
             section=section,
             faculty=teacher_id,
-            semester=semester
+            semester=semester,
+            token=new_token,
         )
         new_session.save()
+        return redirect('teacher_courses')
     departments = Department.objects.all()
     batches = Batch.objects.all()
     semesters = Semester.objects.all()

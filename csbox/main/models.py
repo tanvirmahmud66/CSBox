@@ -126,7 +126,7 @@ class SessionData(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     faculty = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-
+    token = models.CharField(max_length=5, null=True, blank=True)
     class Meta:
         verbose_name = 'Session Data'
         verbose_name_plural = 'Session Data'

@@ -33,7 +33,7 @@ class StudentProfileView(admin.ModelAdmin):
 
 
 class SessionDataView(admin.ModelAdmin):
-    list_display = ('sessionName', 'department', 'batch', 'section', 'faculty', 'semester')
+    list_display = ('sessionName', 'token','department', 'batch', 'section', 'faculty','semester')
 
 
 class PostDBView(admin.ModelAdmin):
