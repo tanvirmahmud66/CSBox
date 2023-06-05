@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department, Batch, Section, Semester, Verification, TeacherProfile, StudentsProfile, SessionData, PostDB, CommentDB, FileDatabase
+from .models import Department, Batch, Section, Semester, Verification, TeacherProfile, StudentsProfile, SessionData, PostDB, CommentDB, FileDatabase, SessionMember
 
 
 # Register your models here.
@@ -36,6 +36,10 @@ class SessionDataView(admin.ModelAdmin):
     list_display = ('sessionName', 'token','department', 'batch', 'section', 'faculty','semester')
 
 
+class SessionMemberView(admin.ModelAdmin):
+    list_display = ('id','session', 'member', 'token')
+
+
 class PostDBView(admin.ModelAdmin):
     list_display = ('session', 'creator', 'postBody', 'is_teacher', 'is_student', 'is_announcement', 'created', 'updated')
 
@@ -60,3 +64,4 @@ admin.site.register(SessionData, SessionDataView)
 admin.site.register(PostDB, PostDBView)
 admin.site.register(CommentDB, CommentDBView)
 admin.site.register(FileDatabase, FileDatabaseView)
+admin.site.register(SessionMember, SessionMemberView)

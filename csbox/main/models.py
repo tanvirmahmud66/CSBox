@@ -127,12 +127,27 @@ class SessionData(models.Model):
     faculty = models.ForeignKey(TeacherProfile, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     token = models.CharField(max_length=5, null=True, blank=True)
+    
     class Meta:
         verbose_name = 'Session Data'
         verbose_name_plural = 'Session Data'
     
     def __str__(self):
         return self.sessionName
+
+
+#============================================================== Session Member
+class SessionMember(models.Model):
+    session = models.ForeignKey(SessionData, on_delete=models.CASCADE)
+    member = models.ForeignKey(StudentsProfile, on_delete=models.CASCADE)
+    token = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Session Member'
+        verbose_name_plural = 'Session Member'
+    
+    def __str__(self):
+        return f"{self.session} {self.member}"
 
 
 #============================================================== Post Database

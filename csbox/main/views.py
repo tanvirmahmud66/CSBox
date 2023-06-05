@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, Semester, SessionData, PostDB, CommentDB, FileDatabase
+from .models import Department, Batch, Section, Verification, TeacherProfile, StudentsProfile, Semester, SessionData, PostDB, CommentDB, FileDatabase, SessionMember
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -40,7 +40,9 @@ def signin(request):
                     user = authenticate(username=username, password=password)
                     if user is not None:
                         login(request, user)
-                        return render(request, "student/home.html")
+                        return render(request, "student/home.html",{
+                            "student": True,
+                        })
                     else:
                         messages.info(request, invalid)
                         return redirect('signin')
@@ -230,6 +232,7 @@ def student_registration(request):
                     recipient_list,
                     fail_silently=False
                 )
+                print(link)
                 return render(request, 'notification.html',{
                     "title": "Confirm Your Email",
                     "notification": "We have Send an email to your email address for verify registration process. Please check your email address.",
@@ -370,6 +373,25 @@ def student_profile(request):
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Home page
 @login_required(login_url='signin')
 def student_home(request):
+    if request.method == "POST":
+        token = request.POST.get('token')
+        session = SessionData.objects.get(token=token)
+        student = StudentsProfile.objects.get(user=request.user)
+        print(token)
+        print(session)
+        print(student)
+        try:
+            new_sessionMember = SessionMember.objects.get( member=student, token=token)
+            if new_sessionMember:
+                messages.info(request, 'Your are already member of this session')
+        except Exception as e:
+            print(e)
+            new_sessionMember = SessionMember.objects.create(
+                    session=session,
+                    member=student,
+                    token = token
+                )
+            new_sessionMember.save()
     return render(request, "student/home.html", {
         "student": True,
     })
@@ -481,7 +503,7 @@ def faculty_single_course(request, session_name,pk):
     all_post = PostDB.objects.filter(session=course_obj)
     all_files = FileDatabase.objects.filter(sessionId=pk)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
-    print(teacher_profile)
+    session_member = SessionMember.objects.filter(token=course_obj.token)
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -525,6 +547,7 @@ def faculty_single_course(request, session_name,pk):
         "teacher_profile": teacher_profile,
         "course_obj": course_obj,
         "posts": all_post,
+        "session_member": session_member,
         "files": all_files,
     })
 

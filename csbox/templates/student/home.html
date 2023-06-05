@@ -15,7 +15,18 @@
 {%block content%}
     
     <div class="wraper">
-        This is Student home page Tanvir Mahmud Fahim, Stamford University Bangladesh, Computer Science & Engineering
+        <form method="POST">
+            {%csrf_token%}
+            <input type="text" id="token" name="token" placeholder="Session Token">
+            <input type="submit" value="Join Session">
+        </form>
+        {%if messages%}
+            <div class="message">
+            {%for each in messages%}
+                <p>{{each}}</p>
+            {%endfor%}
+            </div>
+        {%endif%}
     </div>
     
 {%endblock content%}
