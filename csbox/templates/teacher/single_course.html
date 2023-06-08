@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div id="Member_section" class="member_section">
                     <ul>
                         {%for each in session_member%}
-                            <li>{{each.member.user.first_name}} {{each.member.user.last_name}}</li>
+                            <li class="item">{{each.member.user.first_name}} {{each.member.user.last_name}}</li>
                         {%endfor%}
                     </ul>
                 </div>

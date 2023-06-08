@@ -45,6 +45,7 @@
     background-color: rgba(255, 255, 0, 0.545);
     color: black;
     padding: .5rem;
+    border-radius: 10px;
 }
 
 .other_info{
@@ -53,7 +54,6 @@
     bottom: 20px;
     width: 400px;
     height: 430px;
-    /* background-color: yellow; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -70,6 +70,7 @@
     height: 100%;
     background:none;
     border: 1px solid #10B0A7;
+    border-radius: 10px 10px 0 0;
     cursor: pointer;
     transition: all .2s ease;
 }
@@ -84,7 +85,8 @@
 .other_info_details{
     width: 100%;
     height: 88%;
-    background-color: #dfdfdf;
+    border-radius: 0 0 10px 10px;
+    background-color: #c0c0c0db;
     color: rgb(8, 112, 247);
 }
 .repo_section{
@@ -99,6 +101,18 @@
     height: 100%;
     padding: 15px;
     overflow: scroll;
+}
+.member_section ul{
+    width: 100%;
+    height: 100%;
+    list-style: none;
+}
+
+.member_section .item{
+    padding: .7rem .5rem;
+    margin: .5rem 0;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
 }
 
 /* ================================================= */
@@ -168,6 +182,9 @@
 .tiny{
     font-size: 1rem;
     font-weight: 300;
+}
+.time{
+    color: rgb(66, 103, 255);
 }
 .post-body{
     padding: 1rem 0;
