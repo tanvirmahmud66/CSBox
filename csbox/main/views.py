@@ -381,8 +381,8 @@ def student_home(request):
         print(session)
         print(student)
         try:
-            new_sessionMember = SessionMember.objects.get( member=student, token=token)
-            if new_sessionMember:
+            is_sessionMember = SessionMember.objects.get( member=student, token=token)
+            if is_sessionMember:
                 messages.info(request, 'Your are already member of this session')
         except Exception as e:
             print(e)
@@ -392,8 +392,14 @@ def student_home(request):
                     token = token
                 )
             new_sessionMember.save()
+    student = StudentsProfile.objects.get(user=request.user)
+    membership = SessionMember.objects.filter(member=student)
+    all_sessions=[]
+    for each in membership:
+        all_sessions.append(SessionData.objects.get(sessionName=each.session, token=each.token))
     return render(request, "student/home.html", {
         "student": True,
+        "all_session": all_sessions,
     })
 
 
@@ -560,8 +566,8 @@ def faculty_del_post(request, session_name, session_id, pk):
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
 # @login_required(login_url='signin')
-def student_single_course(request, pk):
-    pass
+def student_single_course(request, session_name, pk):
+    return render(request, 'student/single_course.html')
 
 
 

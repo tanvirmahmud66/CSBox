@@ -1,0 +1,101 @@
+.wraper{
+    width: 100%;
+    height: 93vh;
+    position: relative;
+}
+
+.courses-content{
+    margin-top: 20px;
+    height: 90%;
+    overflow: scroll;
+}
+.content-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem;
+}
+.content-wrapper a{
+    text-decoration: none;
+}
+
+.courses-content .item{
+    height: 150px;
+    width: 285px;
+    border-radius: 15px;
+    /* background-color: #F96167; */
+    background-color: #26a0da;
+    color: rgba(255, 255, 255, 0.866);
+    overflow: hidden;
+    padding: .6rem;
+    transition: all .2s ease;
+    box-shadow: 1px 1px 4px rgb(200, 200, 200);
+    position: relative;
+}
+.courses-content .item:hover{
+    background-color: #16719b;
+    color: white;
+}
+
+.course-name{
+    color: rgb(255, 255, 255);
+    text-align: left;
+    font-size: 1.3rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+.course-info{
+    position: absolute;
+    bottom: 0;
+    height: 80px;
+    margin-top: .4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-bottom: .3rem;
+}
+.department_name, .batch_name, .section_name{
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgb(225, 225, 225);
+    transition: all .2s ease;
+}
+
+.item:hover .department_name{
+    color: rgba(6, 237, 125, 0.837);
+}
+.item:hover .batch_name{
+    color: rgba(255, 243, 16, 0.874);
+}
+.item:hover .section_name{
+    color: rgba(253, 166, 51, 0.888);
+}
+
+.wraper form {
+    width: 30%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.wraper #token{
+    width: 65%;
+    padding: .5rem .5rem;
+    font-size: 1.1rem;
+}
+.wraper #join_session{
+    padding: .6rem .6rem;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    background: #10B0A7;
+    color: white;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+#join_session:hover{
+    background: #019b93;
+}

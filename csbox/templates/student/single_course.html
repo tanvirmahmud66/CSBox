@@ -1,0 +1,29 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    Single Course | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/student/single_course.css'%}"/>
+{%endblock link%}
+
+{%block navImg%}
+    {%if student_profile.profile_pic%}
+        <img src="{{student_profile.profile_pic.url}}" alt="Profile Pic">
+    {%else%}
+        <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+    {%endif%}
+{%endblock navImg%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+    
+    <div class="wraper">
+        This is Single course section
+    </div>
+    
+{%endblock content%}

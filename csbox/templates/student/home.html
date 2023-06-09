@@ -7,7 +7,7 @@
 {%endblock title%}
 
 {%block link%} 
-    <link rel="stylesheet" href="{%static 'css/teacher/home.css'%}"/>
+    <link rel="stylesheet" href="{%static 'css/student/home.css'%}"/>
 {%endblock link%}
 
 {%block navImg%}
@@ -26,7 +26,7 @@
         <form method="POST">
             {%csrf_token%}
             <input type="text" id="token" name="token" placeholder="Session Token" required>
-            <input type="submit" value="Join Session">
+            <input type="submit" id="join_session" value="Join Session">
         </form>
         {%if messages%}
             <div class="message">
@@ -35,6 +35,24 @@
             {%endfor%}
             </div>
         {%endif%}
+        <div>
+            <div class="courses-content">
+                <div class="content-wrapper">
+                    {%for session in all_session%}
+                    <a href="{%url 'single_course' session.sessionName session.id%}">
+                        <div class="item">
+                            <h2 class="course-name">{{session.sessionName}}</h2>
+                            <div class="course-info">
+                                <h5 class="department_name">{{session.department}}</h5>
+                                <h5 class="batch_name">Batch: {{session.batch}} - {{session.section.section}}</h5>
+                                <h5 class="section_name">Author: {{session.faculty.user.first_name}} {{session.faculty.user.last_name}}</h5>
+                            </div>
+                        </div>
+                    </a>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
     </div>
     
 {%endblock content%}
