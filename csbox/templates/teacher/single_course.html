@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="other_info">
             <div class="other_info_header">
                 <button id="repo_button" class="other_info_btn active">Repository</button>
-                <button id="member_button" class="other_info_btn">Course Member</button>
+                <button id="member_button" class="other_info_btn ">Course Member</button>
             </div>
             <div class="other_info_details">
                 <div id="Repo_section" class="repo_section">
@@ -113,8 +113,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="comment-section"></div>
                     
                     <!-- toggle 3 dots button -->
+                    {%if post.creator == request.user%}
                     <button class="toggle-button" onclick="del(); edit()" data-popup="p{{post.id}}"><i class="fas fa-ellipsis-h"></i></button>
-
+                    {%endif%}
                     <!-- popup section of 3 dots button and button for delete and edit -->
                     <div class="toggle-section" id="p{{post.id}}">
                         <div class="toggle-section-wraper">

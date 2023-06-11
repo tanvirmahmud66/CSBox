@@ -33,7 +33,7 @@ urlpatterns = [
 
     # CRUD operation
     path('faculty/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.faculty_del_post, name='faculty-del-post'),
-
+    path('student/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.student_del_post, name='student-del-post'),
 
     #home single post section
     path('home/single_post/<int:post_id>/', views.single_post, name='single_post'),

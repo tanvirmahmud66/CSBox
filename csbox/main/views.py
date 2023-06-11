@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-#======================================================== Sign In
+#-------------------------------------------------------------- Sign In
 
 def signin(request):
     if request.user.is_authenticated:
@@ -59,12 +59,69 @@ def signin(request):
     return render(request, 'signin.html')
 
 
-#======================================================== Logout User
+#--------------------------------------------------------- Logout User
 
 def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('signin')
+
+
+#--------------------------------------------------------- Home
+@login_required(login_url='signin')
+def home(request):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('teacher_home')
+    else:
+        return redirect('student_home')
+    
+
+#--------------------------------------------------------- Profile
+@login_required(login_url='signin')
+def check_profile(request):
+    try:
+        user_verify = Verification.objects.get(user=request.user)
+        if user_verify.is_teacher:
+            return redirect('teacher_profile')
+        else:
+            return redirect('student_profile')
+    except Exception as e:
+        print(e)
+
+
+
+#----------------------------------------------------------- Courses
+@login_required(login_url='signin')
+def courses(request):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('teacher_courses')
+    else:
+        return redirect('student_courses')
+
+
+#----------------------------------------------------------- Single course
+@login_required(login_url='signin')
+def single_course(request, session_name,pk):
+    verify_user = Verification.objects.get(user=request.user)
+    if verify_user.is_teacher:
+        return redirect('fuculty_single_course', session_name,pk)
+    else:
+        return redirect('student_single_course', session_name,pk)
+
+
+#-------------------------- Token generate ---------------------- Token generate
+token_set = set()
+def generate_token(length):
+    characters = string.ascii_letters + string.digits
+    token = ''.join(secrets.choice(characters) for _ in range(length))
+    length = len(token_set)
+    token_set.add(token)
+    if len(token_set)==length+1:
+        return token
+    else:
+        generate_token(5)
 
 
 #======================================================== Registration (Teacher)
@@ -164,6 +221,172 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
             "notification": "Your email is verified. Please", 
             "login": True
         })
+
+
+
+#================================================================== Teacher Home page
+@login_required(login_url='signin')
+def teacher_home(request):
+    normal_posts = PostDB.objects.filter(is_announcement=False)
+    announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    return render(request, "teacher/home.html",{
+        "normal_posts": normal_posts,
+        "announcement": announcement,
+        "teacher_profile": teacher_profile,
+    })
+
+
+#======================================================================= Teacher Profile
+@login_required(login_url='signin')
+def teacher_profile(request):
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    if request.method=="POST":
+        bio = request.POST.get('bio')
+        studied_at = request.POST.get('studied_at')
+        program = request.POST.get('program')
+        address = request.POST.get('address')
+        profile_pic = request.FILES.get('profile-pic')
+        cover_pic = request.FILES.get('cover-pic')
+        teacher_profile.bio = bio
+        teacher_profile.program = program
+        teacher_profile.studied_at = studied_at
+        teacher_profile.address = address
+        if profile_pic:
+            teacher_profile.profile_pic = profile_pic
+        if cover_pic:
+            teacher_profile.cover_pic = cover_pic
+        teacher_profile.save()
+        return redirect('check_profile')
+    return render(request, 'teacher/teacher_profile.html', {
+        "teacher_profile": teacher_profile,
+    })
+
+
+#================================================================== Teacher Courses
+@login_required(login_url='signin')
+def teacher_courses(request):
+    if request.method=="POST":
+        sessionName = request.POST['sessionName']
+        sec = request.POST['section']
+        section_model = Section.objects.get(id=sec)
+        department = section_model.department
+        batch = section_model.batch
+        section = section_model
+        sem = request.POST['semester']
+        semester = Semester.objects.get(id=sem)
+        teacher_id = TeacherProfile.objects.get(user=request.user)
+        new_token = generate_token(5)
+        new_session = SessionData.objects.create(
+            sessionName=sessionName,
+            department=department,
+            batch=batch,
+            section=section,
+            faculty=teacher_id,
+            semester=semester,
+            token=new_token,
+        )
+        new_session.save()
+        return redirect('teacher_courses')
+    departments = Department.objects.all()
+    batches = Batch.objects.all()
+    semesters = Semester.objects.all()
+    if request.GET.get('q')!=None:
+        q=request.GET.get('q')
+        all_session = SessionData.objects.filter(
+            faculty__user=request.user,
+            semester=q
+        )
+        sem = Semester.objects.get(id=q)
+        teacher_profile = TeacherProfile.objects.get(user=request.user)
+        return render(request, 'teacher/all_courses.html', {
+            "teacher_profile": teacher_profile,
+            "departments": departments,
+            "batches": batches, 
+            "semesters": semesters,
+            "all_session": all_session.order_by('semester'),
+            "q": sem
+        })
+    else:
+        all_session = SessionData.objects.filter(
+           faculty__user=request.user,
+           semester=semesters[0] 
+        )
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    return render(request, 'teacher/all_courses.html', {
+        "teacher_profile": teacher_profile,
+        "departments": departments,
+        "batches": batches, 
+        "semesters": semesters,
+        "all_session": all_session.order_by('semester'),
+        "q": semesters[0]
+    })
+
+
+
+#=================================================================== Faculty Single Course
+@login_required(login_url='signin')
+def faculty_single_course(request, session_name,pk):
+    course_obj = SessionData.objects.get(id=pk)
+    verify_obj = Verification.objects.get(user=request.user)
+    all_post = PostDB.objects.filter(session=course_obj)
+    all_files = FileDatabase.objects.filter(sessionId=pk)
+    teacher_profile = TeacherProfile.objects.get(user=request.user)
+    session_member = SessionMember.objects.filter(token=course_obj.token)
+    if request.method=="GET":
+        post_id_edit = request.GET.get('post_id')
+        edit_post_body = request.GET.get('edit_post_content')
+        edit_announcement = request.GET.get('edit-announcement')
+        try:
+            editpost_postdb = PostDB.objects.get(id=post_id_edit)
+            if editpost_postdb is not None:
+                editpost_postdb.postBody = edit_post_body
+                editpost_postdb.is_announcement = edit_announcement
+                editpost_postdb.save()
+        except Exception as e:
+            print(e)
+        
+    if request.method == "POST":
+        postbody = request.POST['post_content']
+        files = request.FILES.getlist('files')
+        is_announcement = request.POST.get("announcement")
+        if is_announcement=="True":
+            announcement = True
+        else:
+            announcement = False
+        print(postbody, files, is_announcement)
+        if verify_obj.is_teacher:
+            new_post = PostDB.objects.create(
+                session = course_obj,
+                creator = course_obj.faculty.user,
+                is_teacher=True,
+                is_announcement=announcement,
+                postBody = postbody,
+            )
+            new_post.save()
+            for file in files:
+                file_upload = FileDatabase.objects.create(
+                    uploadFile = file,
+                    sessionId = course_obj.id,
+                    postId=new_post.id
+                )
+                file_upload.save()
+            return redirect("fuculty_single_course", session_name, pk)
+    return render(request, 'teacher/single_course.html', {
+        "teacher_profile": teacher_profile,
+        "course_obj": course_obj,
+        "posts": all_post,
+        "session_member": session_member,
+        "files": all_files,
+    })
+
+#------------ faculty delete post -------------
+def faculty_del_post(request, session_name, session_id, pk):
+    del_post = PostDB.objects.get(id=pk)
+    del_post.delete()
+    return redirect("fuculty_single_course", session_name, session_id)
+
+
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Registration (student)
@@ -283,92 +506,6 @@ def student_verified(request, username, student_id, dept_id, batch_id, section_i
     })
 
 
-#================================================================== Home
-@login_required(login_url='signin')
-def home(request):
-    verify_user = Verification.objects.get(user=request.user)
-    if verify_user.is_teacher:
-        return redirect('teacher_home')
-    else:
-        return redirect('student_home')
-
-
-
-#================================================================== Teacher Home page
-@login_required(login_url='signin')
-def teacher_home(request):
-    normal_posts = PostDB.objects.filter(is_announcement=False)
-    announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
-    teacher_profile = TeacherProfile.objects.get(user=request.user)
-    return render(request, "teacher/home.html",{
-        "normal_posts": normal_posts,
-        "announcement": announcement,
-        "teacher_profile": teacher_profile,
-    })
-
-#--------------------------------------------------------- Profile
-@login_required(login_url='signin')
-def check_profile(request):
-    try:
-        user_verify = Verification.objects.get(user=request.user)
-        if user_verify.is_teacher:
-            return redirect('teacher_profile')
-        else:
-            return redirect('student_profile')
-    except Exception as e:
-        print(e)
-
-
-#======================================================================= Teacher Profile
-@login_required(login_url='signin')
-def teacher_profile(request):
-    teacher_profile = TeacherProfile.objects.get(user=request.user)
-    if request.method=="POST":
-        bio = request.POST.get('bio')
-        studied_at = request.POST.get('studied_at')
-        program = request.POST.get('program')
-        address = request.POST.get('address')
-        profile_pic = request.FILES.get('profile-pic')
-        cover_pic = request.FILES.get('cover-pic')
-        teacher_profile.bio = bio
-        teacher_profile.program = program
-        teacher_profile.studied_at = studied_at
-        teacher_profile.address = address
-        if profile_pic:
-            teacher_profile.profile_pic = profile_pic
-        if cover_pic:
-            teacher_profile.cover_pic = cover_pic
-        teacher_profile.save()
-        return redirect('check_profile')
-    return render(request, 'teacher/teacher_profile.html', {
-        "teacher_profile": teacher_profile,
-    })
-
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Profile
-@login_required(login_url='signin')
-def student_profile(request):
-    student_profile = StudentsProfile.objects.get(user=request.user)
-    if request.method == "POST":
-        bio = request.POST.get('bio')
-        school = request.POST.get('school')
-        college = request.POST.get('college')
-        address = request.POST.get('address')
-        profile_pic = request.FILES.get('profile-pic')
-        cover_pic = request.FILES.get('cover-pic')
-        student_profile.bio = bio
-        student_profile.school = school
-        student_profile.college = college
-        student_profile.address = address
-        if profile_pic:
-            student_profile.profile_pic = profile_pic
-        if cover_pic:
-            student_profile.cover_pic = cover_pic
-        student_profile.save()
-    return render(request, 'student/student_profile.html', {
-        "student": True,
-        "student_profile": student_profile,
-    })
-
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Home page
 @login_required(login_url='signin')
@@ -403,87 +540,31 @@ def student_home(request):
     })
 
 
-
-#-------------------------- Token generate ----------------------
-token_set = set()
-def generate_token(length):
-    characters = string.ascii_letters + string.digits
-    token = ''.join(secrets.choice(characters) for _ in range(length))
-    length = len(token_set)
-    token_set.add(token)
-    if len(token_set)==length+1:
-        return token
-    else:
-        generate_token(5)
-
-
-#================================================================== Courses
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Profile
 @login_required(login_url='signin')
-def courses(request):
-    verify_user = Verification.objects.get(user=request.user)
-    if verify_user.is_teacher:
-        return redirect('teacher_courses')
-    else:
-        return redirect('student_courses')
-    
-#================================================================== Teacher Courses
-@login_required(login_url='signin')
-def teacher_courses(request):
-    if request.method=="POST":
-        sessionName = request.POST['sessionName']
-        sec = request.POST['section']
-        section_model = Section.objects.get(id=sec)
-        department = section_model.department
-        batch = section_model.batch
-        section = section_model
-        sem = request.POST['semester']
-        semester = Semester.objects.get(id=sem)
-        teacher_id = TeacherProfile.objects.get(user=request.user)
-        new_token = generate_token(5)
-        new_session = SessionData.objects.create(
-            sessionName=sessionName,
-            department=department,
-            batch=batch,
-            section=section,
-            faculty=teacher_id,
-            semester=semester,
-            token=new_token,
-        )
-        new_session.save()
-        return redirect('teacher_courses')
-    departments = Department.objects.all()
-    batches = Batch.objects.all()
-    semesters = Semester.objects.all()
-    if request.GET.get('q')!=None:
-        q=request.GET.get('q')
-        all_session = SessionData.objects.filter(
-            faculty__user=request.user,
-            semester=q
-        )
-        sem = Semester.objects.get(id=q)
-        teacher_profile = TeacherProfile.objects.get(user=request.user)
-        return render(request, 'teacher/all_courses.html', {
-            "teacher_profile": teacher_profile,
-            "departments": departments,
-            "batches": batches, 
-            "semesters": semesters,
-            "all_session": all_session.order_by('semester'),
-            "q": sem
-        })
-    else:
-        all_session = SessionData.objects.filter(
-           faculty__user=request.user,
-           semester=semesters[0] 
-        )
-    teacher_profile = TeacherProfile.objects.get(user=request.user)
-    return render(request, 'teacher/all_courses.html', {
-        "teacher_profile": teacher_profile,
-        "departments": departments,
-        "batches": batches, 
-        "semesters": semesters,
-        "all_session": all_session.order_by('semester'),
-        "q": semesters[0]
+def student_profile(request):
+    student_profile = StudentsProfile.objects.get(user=request.user)
+    if request.method == "POST":
+        bio = request.POST.get('bio')
+        school = request.POST.get('school')
+        college = request.POST.get('college')
+        address = request.POST.get('address')
+        profile_pic = request.FILES.get('profile-pic')
+        cover_pic = request.FILES.get('cover-pic')
+        student_profile.bio = bio
+        student_profile.school = school
+        student_profile.college = college
+        student_profile.address = address
+        if profile_pic:
+            student_profile.profile_pic = profile_pic
+        if cover_pic:
+            student_profile.cover_pic = cover_pic
+        student_profile.save()
+    return render(request, 'student/student_profile.html', {
+        "student": True,
+        "student_profile": student_profile,
     })
+
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Courses
@@ -491,77 +572,6 @@ def teacher_courses(request):
 def student_courses(request):
     return render(request, 'student/all_courses.html')
 
-
-#================================================================== Single course
-@login_required(login_url='signin')
-def single_course(request, session_name,pk):
-    verify_user = Verification.objects.get(user=request.user)
-    if verify_user.is_teacher:
-        return redirect('fuculty_single_course', session_name,pk)
-    else:
-        return redirect('student_single_course', session_name,pk)
-
-#=================================================================== Faculty Single Course
-@login_required(login_url='signin')
-def faculty_single_course(request, session_name,pk):
-    course_obj = SessionData.objects.get(id=pk)
-    verify_obj = Verification.objects.get(user=request.user)
-    all_post = PostDB.objects.filter(session=course_obj)
-    all_files = FileDatabase.objects.filter(sessionId=pk)
-    teacher_profile = TeacherProfile.objects.get(user=request.user)
-    session_member = SessionMember.objects.filter(token=course_obj.token)
-    if request.method=="GET":
-        post_id_edit = request.GET.get('post_id')
-        edit_post_body = request.GET.get('edit_post_content')
-        edit_announcement = request.GET.get('edit-announcement')
-        try:
-            editpost_postdb = PostDB.objects.get(id=post_id_edit)
-            if editpost_postdb is not None:
-                editpost_postdb.postBody = edit_post_body
-                editpost_postdb.is_announcement = edit_announcement
-                editpost_postdb.save()
-        except Exception as e:
-            print(e)
-        
-    if request.method == "POST":
-        postbody = request.POST['post_content']
-        files = request.FILES.getlist('files')
-        is_announcement = request.POST.get("announcement")
-        if is_announcement=="True":
-            announcement = True
-        else:
-            announcement = False
-        print(postbody, files, is_announcement)
-        if verify_obj.is_teacher:
-            new_post = PostDB.objects.create(
-                session = course_obj,
-                creator = course_obj.faculty.user,
-                is_teacher=True,
-                is_announcement=announcement,
-                postBody = postbody,
-            )
-            new_post.save()
-            for file in files:
-                file_upload = FileDatabase.objects.create(
-                    uploadFile = file,
-                    sessionId = course_obj.id,
-                    postId=new_post.id
-                )
-                file_upload.save()
-            return redirect("fuculty_single_course", session_name, pk)
-    return render(request, 'teacher/single_course.html', {
-        "teacher_profile": teacher_profile,
-        "course_obj": course_obj,
-        "posts": all_post,
-        "session_member": session_member,
-        "files": all_files,
-    })
-
-#------------ faculty delete post -------------
-def faculty_del_post(request, session_name, session_id, pk):
-    del_post = PostDB.objects.get(id=pk)
-    del_post.delete()
-    return redirect("fuculty_single_course", session_name, session_id)
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
@@ -609,6 +619,12 @@ def student_single_course(request, session_name, pk):
         "posts": all_post,
     })
 
+
+#------------ student delete post -------------
+def student_del_post(request, session_name, session_id, pk):
+    del_post = PostDB.objects.get(id=pk)
+    del_post.delete()
+    return redirect("student_single_course", session_name, session_id)
 
 
 #@@@@@@@@@@@@@@@@@@@@@ single post page @@@@@@@@@@@@@@@@@@@@@@@@@@@
