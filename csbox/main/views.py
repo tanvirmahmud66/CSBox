@@ -297,7 +297,7 @@ def home(request):
 #================================================================== Teacher Home page
 @login_required(login_url='signin')
 def teacher_home(request):
-    normal_posts = PostDB.objects.filter(creator=request.user, is_announcement=False)
+    normal_posts = PostDB.objects.filter(is_announcement=False)
     announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
     return render(request, "teacher/home.html",{
@@ -567,7 +567,47 @@ def faculty_del_post(request, session_name, session_id, pk):
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Student Single Course
 # @login_required(login_url='signin')
 def student_single_course(request, session_name, pk):
-    return render(request, 'student/single_course.html')
+    course_obj = SessionData.objects.get(id=pk)
+    session_member = SessionMember.objects.filter(token=course_obj.token)
+    all_post = PostDB.objects.filter(session=course_obj)
+    verify_obj = Verification.objects.get(user=request.user)
+    if request.method=="GET":
+        post_id_edit = request.GET.get('post_id')
+        edit_post_body = request.GET.get('edit_post_content')
+        try:
+            editpost_postdb = PostDB.objects.get(id=post_id_edit)
+            if editpost_postdb is not None:
+                editpost_postdb.postBody = edit_post_body
+                editpost_postdb.is_announcement = False
+                editpost_postdb.save()
+        except Exception as e:
+            print(e)
+    if request.method == "POST":
+        postbody = request.POST['post_content']
+        files = request.FILES.getlist('files')
+        if verify_obj.is_student:
+            new_post = PostDB.objects.create(
+                session = course_obj,
+                creator = request.user,
+                is_student=True,
+                is_announcement=False,
+                postBody = postbody,
+            )
+            new_post.save()
+            for file in files:
+                file_upload = FileDatabase.objects.create(
+                    uploadFile = file,
+                    sessionId = course_obj.id,
+                    postId=new_post.id
+                )
+                file_upload.save()
+            return redirect("student_single_course", session_name, pk)
+    return render(request, 'student/single_course.html', {
+        "student": True,
+        "course_obj": course_obj,
+        "session_member": session_member,
+        "posts": all_post,
+    })
 
 
 

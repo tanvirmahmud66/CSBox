@@ -18,12 +18,183 @@
     {%endif%}
 {%endblock navImg%}
 
-{%block script%}{%endblock script%}
+{%block script%}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var toggleButtons = document.getElementsByClassName("toggle-button");
+  var popupSections = document.getElementsByClassName("toggle-section");
+  
+
+  // Attach event listeners to each toggle button
+  Array.from(toggleButtons).forEach(function(button) {
+    button.addEventListener("click", function(event) {
+      event.stopPropagation();
+      var popupId = button.getAttribute("data-popup");
+      var targetPopup = document.getElementById(popupId);
+
+      // Close any previously opened popup
+      Array.from(popupSections).forEach(function(section) {
+        if (section !== targetPopup) {
+          section.classList.remove("toggle-section-visible");
+        }
+      });
+
+      // Toggle the visibility of the clicked popup
+      targetPopup.classList.toggle("toggle-section-visible");
+    });
+  });
+
+  // Close the popup sections when clicking anywhere outside them
+  document.addEventListener("click", function(event) {
+    Array.from(popupSections).forEach(function(section) {
+      if (!section.contains(event.target)) {
+        section.classList.remove("toggle-section-visible");
+      }
+    });
+  });
+});
+
+
+</script>
+{%endblock script%}
 
 {%block content%}
     
     <div class="wraper">
-        This is Single course section
+        <div class="info_content">
+            <div class="course_info">
+                <h1 class="course_title">{{course_obj.sessionName}}</h1>
+                <div class="course_details">
+                    <p class="element"><span class="bold">Faculty:</span> {{course_obj.faculty.user.first_name}} {{course_obj.faculty.user.last_name}} ({{course_obj.faculty.designation}})</p>
+                    <p class="element"><span class="bold">Contact:</span> {{course_obj.faculty.user.email}}</p>
+                    <p class="element"><span class="bold">Semester:</span> {{course_obj.semester}}</p>
+                    <p class="element"><span class="bold">Department:</span> {{course_obj.department}}</p>
+                    <p class="element"><span class="bold">Batch:</span> {{course_obj.batch}}</p>
+                    <p class="element"><span class="bold">Section:</span> {{course_obj.section.section}}</p>
+                </div>
+            </div>
+            <div id="Member_section" class="member_section">
+                <h3>Course Member</h3>
+                <ul>
+                    {%for each in session_member%}
+                        <li class="item">{{each.member.user.first_name}} {{each.member.user.last_name}}</li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+        <div class="main_section">
+            <div class="post_section">
+                <button id="popupButton" class="post_btn"><i class="fas fa-plus fas_icon"></i>Create Post</button>
+                <div class="post_wraper">
+                    {%for post in posts%}
+                    <div {%if post.is_announcement%} class="post-card-red"{%else%} class="post-card"{%endif%}>
+                        <div class="card-heading-warper">
+                            <h2 class="post-heading">
+                                <span class="bold">{{post.creator.first_name}} {{post.creator.last_name}}</span>
+                                {%if post.is_announcement%}Announce to{%else%}Post to{%endif%}
+                                <span class="bold">{{post.session}}</span>
+                                batch
+                                <span class="bold">{{post.session.batch}}-{{post.session.section.section}}</span>
+                                <span class="tiny"> - {{post.session.semester}}</span>
+                            </h2>
+                            <p class="time">{{post.created | timesince}} ago</p>  
+                        </div>
+                        <div class="post-body">
+                            <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
+                        </div>
+                        <div class="comment-section"></div>
+                        
+                        <!-- toggle 3 dots button -->
+                        {%if post.creator == request.user%}
+                        <button class="toggle-button" onclick="del(); edit()" data-popup="p{{post.id}}"><i class="fas fa-ellipsis-h"></i></button>
+                        {%endif%}
+                        <!-- popup section of 3 dots button and button for delete and edit -->
+                        <div class="toggle-section" id="p{{post.id}}">
+                            <div class="toggle-section-wraper">
+                                <button class="post-deleteBtn"  data-popup="d{{post.id}}">Delete</button>
+                                <button class="post-editBtn" data-popup="e{{post.id}}">Edit</button>
+                            </div>
+                        </div>
+    
+                        <!-- delete post popup -->
+                        <div class="post-delPopup" id="d{{post.id}}">
+                            <div class="post-delContent">
+                                <h2 class="head">Please Confirm Delete</h2>
+                                <div {%if post.is_announcement%} class="post-card-red"{%else%} class="post-card"{%endif%}>
+                                    <div class="card-heading-warper">
+                                        <h2 class="post-heading">
+                                            <span class="bold">{{post.creator.first_name}} {{post.creator.last_name}}</span>
+                                            {%if post.is_announcement%}Announce to{%else%}Post to{%endif%}
+                                            <span class="bold">{{post.session}}</span>
+                                            batch
+                                            <span class="bold">{{post.session.batch}}-{{post.session.section.section}}</span>
+                                            <span class="tiny"> - {{post.session.semester}}</span>
+                                        </h2>
+                                        <p class="time">{{post.created | timesince}} ago</p>   
+                                    </div>
+                                    <div class="post-body">
+                                        <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
+                                    </div>
+                                </div>
+                                <button class="pop-close" data-popup="d{{post.id}}">Cancel</button>
+                                <a class="del-confirm-btn" href="{%url 'faculty-del-post' post.session.sessionName post.session.id post.id%}">Confirm Delete</a>
+                            </div>
+                        </div>
+    
+                        <!-- edit post popup -->
+                        <div class="post-editPopup" id="e{{post.id}}">
+                            <div class="post-editContent">
+                                <h2 class="edit-head"> Edit Post</h2>
+                                <form method="GET">
+                                    {%csrf_token%}
+                                    <input value="{{post.id}}" style="display: none;" name="post_id">
+                                    <div class="form-group">
+                                        <textarea id="post_content" name="edit_post_content" required>{{post.postBody}}</textarea>
+                                    </div>
+                                    
+                                    <div class="button-group">
+                                        <button class="pop-closeEdit" data-popup="e{{post.id}}">Cancel</button>
+                                        <button type="submit"  class="edit-btn" href="">Edit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- create post popup -->
+    <div id="popupContainer" class="popupContainer">
+        <div class="popupContent">
+            <h2>Create Post or Announcement</h2>
+            <div class="Post">
+                <form method="POST" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <textarea id="post_content" name="post_content" placeholder="write here..." required></textarea>
+                        <ul class="file-list"></ul>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="file-upload">
+                            <input type="file" id="file-input" name="files" multiple>
+                        </div>
+                    </div>                
+                    
+                    
+                    <input type="submit" class="post-btn" value="Post">
+                </form>
+            </div>
+            <button id="closeButton" class="closeButton"><i class="fas fa-times"></i></button>
+        </div>
     </div>
     
 {%endblock content%}
+
+{%block downscript%} 
+    <script src="{%static 'javascript/student/single_course.js'%}"></script>
+{%endblock downscript%}

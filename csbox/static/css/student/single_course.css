@@ -1,0 +1,498 @@
+.wraper{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+}
+.info_content{
+    width: 40%;
+    height: 100%;
+}
+.course_info{
+    width: 400px;
+    height: 270px;
+    margin-top: 15px;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.course_title{
+    width: 100%;
+    height: 22%;
+    font-size: 1.7rem;
+    color: black;
+    overflow: hidden;
+    border-bottom: 2px solid black;
+    display: flex;
+}
+.course_details{
+    width: 100%;
+    height: 70%;
+    /* background-color: purple; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.element{
+    font-size: 1.1rem;
+}
+.bold{
+    font-weight: bold;
+    color: black;
+}
+.token{
+    background-color: rgba(255, 255, 0, 0.545);
+    color: black;
+    padding: .5rem;
+    border-radius: 10px;
+}
+
+.member_section{
+    width: 400px;
+    height: 350px;
+    margin-top: 15px;
+}
+.member_section h3{
+    padding: .4rem 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: rgb(255, 151, 6);
+    border-bottom: 2px solid black;
+}
+.member_section ul{
+    width: 90%;
+    height: 100%;
+    list-style: none;
+    overflow: scroll;
+}
+
+.member_section .item{
+    padding: .7rem .5rem;
+    margin: .5rem 0;
+    border-radius: 10px;
+    background-color: rgba(162, 162, 162, 0.656);
+}
+
+
+
+/* =============================================================================== */
+
+
+.post_section{
+    width: 780px;
+    height:738px;
+    overflow: scroll;
+    padding-right: 1.5rem;
+    padding-top: 20px;
+}
+
+.post_btn{
+    width: 20%;
+    height: 6%;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    background:none;
+    border-radius: 5px;
+    border: 2.2px solid #10B0A7;
+    transition: all .2s ease;
+}
+.post_btn:hover{
+    background-color:#10B0A7;
+    color: white;
+}
+.fas_icon{
+    margin-right:.4rem;
+}
+.post_wraper{
+    width: 100%;
+    height:693px;
+}
+
+.post-card{
+    width: 100%;
+    padding: 2rem 0;
+    margin: 1.5rem 0;
+    padding: 10px;
+    border: 1.5px solid black;
+    border-radius: 10px;
+    position: relative;
+}
+.post-card-red{
+    width: 100%;
+    padding: 2rem 0;
+    margin: 1.5rem 0;
+    padding: 10px;
+    border: 3px solid rgb(248, 65, 65);
+    border-radius: 10px;
+    position: relative;
+}
+.card-heading-warper{
+    margin-bottom: 10px;
+}
+.post-heading{
+    width: 93%;
+    font-weight: 200;
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+}
+.bold{
+    font-weight:600;
+}
+.tiny{
+    font-size: 1rem;
+    font-weight: 300;
+}
+.time{
+    color: rgb(66, 103, 255);
+}
+.post-body{
+    padding: 1rem 0;
+    width: 95%;
+}
+.post-body .body-text-normal{
+    font-size: 1.45rem;
+    font-weight: 300;
+    line-height: 1.9rem;
+}
+.post-body .body-text-small{
+    font-size: 1.15rem;
+    font-weight: 300;
+    line-height: 1.9rem;
+}
+
+.toggle-button{
+    position: absolute;
+    top:5px;
+    right: 5px;
+    padding:5px;
+    cursor: pointer;
+    border: none;
+}
+
+  
+  .toggle-section {
+    display: none;
+    width: 100px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    position: absolute;
+    top: 30px;
+    right: 5px;
+}
+.toggle-section .toggle-section-wraper{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.toggle-section-wraper button{
+    padding: 3px 10px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+.toggle-section-wraper button:hover{
+    background-color:#10B0A7;
+    color: white;
+}
+  
+  .toggle-section-visible {
+    display: block;
+  }
+
+  .post-delPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.787);
+}
+
+.post-delContent {
+    background-color: white;
+    width: 780px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.post-delContent .head {
+    width: 100%;
+    font-weight: 400;
+    font-size:1.4rem;
+    text-align: center;
+    margin-bottom: 1.2rem;
+    background-color: red;
+    color: white;
+    padding: 10px 0;
+}
+
+.pop-close{
+    padding: 12px 10px;
+    background: none;
+    border: none;
+    background-color:#10B0A7;
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.del-confirm-btn{
+    text-decoration: none;
+    padding: 10px 10px;
+    background: none;
+    border: none;
+    background-color: rgb(246, 56, 56);
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.del-confirm-btn:hover{
+    background-color: red;
+    color: white;
+}
+
+
+.post-editPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.787);
+}
+
+.post-editContent {
+    background-color: white;
+    width: 780px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+.edit-head{
+    width: 100%;
+    font-weight: 400;
+    font-size:1.4rem;
+    text-align: center;
+    margin-bottom: 1.2rem;
+    padding: 10px 0;
+    border: 1px solid black;
+}
+
+
+.button-group{
+    margin-top: 1.4rem;
+}
+
+
+.pop-closeEdit{
+    padding: 11px 10px;
+    background: none;
+    border: none;
+    background-color: rgb(246, 56, 56);
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.edit-btn{
+    text-decoration: none;
+    padding: 10px 10px;
+    background: none;
+    border: none;
+    background-color:#10B0A7;
+    color: white;
+    border-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+
+/* =========================================================== */
+
+.popupContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.787);
+}
+
+.popupContent {
+    background-color: white;
+    width: 750px;
+    height: 440px;
+    padding: 20px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
+
+.popupContent h2 {
+    font-weight: 400;
+    font-size:1.4rem;
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+.Post{
+    width: 100%;
+    height: 90%;
+    /* background-color: red; */
+}
+
+.popupContent button{
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 0 0 2px 2px rgb(36, 36, 36);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .2s ease;
+}
+.popupContent button:hover{
+    background: red;
+    color: white;
+    cursor: pointer;
+}
+.fas{
+    margin-right: 4px;
+}
+.form-group {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    height: 230px;
+    padding: 0 0 20px 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+
+  
+/* Textarea styles */
+.form-group textarea {
+    font-size: 24px;
+    line-height: 1.5;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
+    height: 160px;
+  }
+  
+.form-group textarea:focus {
+    outline: none;
+  }
+  
+  
+  .form-group input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .group{
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .file-upload {
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+  }
+  
+  .file-upload:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .file-upload:active {
+    background-color: #d0d0d0;
+  }
+  
+  .file-upload span {
+    margin-right: 5px;
+  }
+  
+  .file-list {
+    width: 100%;
+    height: 70px;
+    padding: 15px 0;
+    /* margin-top: 10px; */
+    font-size: 14px;
+    display: flex;
+    overflow: scroll;
+  }
+  
+  .file-list li {
+    margin-bottom: 5px;
+    width: auto;
+    list-style-type: none;
+    display: flex;
+    margin-right: 15px;
+    border: 1px solid #0A4D68;
+    border-radius: 10px;
+    padding: 5px 7px;
+    color: rgb(73, 73, 253);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.post-btn{
+    margin-top: 1.5rem;
+    padding: 10px 35px;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #10B0A7;
+    color: white;
+    transition: all .2s ease;
+}
+.post-btn:hover{
+    background-color: #0b827c;
+    color: white;
+}
+ 
