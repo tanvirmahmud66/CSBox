@@ -110,6 +110,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="post-body">
                         <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
                     </div>
+                    <div class="files">
+                        {%for file in files%}
+                            {%if file.postId == post.id%}
+                                <p>{{file.uploadFile}}</p>
+                            {%endif%}
+                        {%endfor%}
+                    </div>
                     <div class="comment-section"></div>
                     
                     <!-- toggle 3 dots button -->

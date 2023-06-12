@@ -72,6 +72,13 @@ class Verification(models.Model):
     def __str__(self):
         return self.user.username
     
+
+
+# #====================================================== default profile pic path
+# def get_default_profile_pic():
+#     return 'path/to/default/profile_pic.jpg'
+
+
 #================================================================== Teacher Profile
 class TeacherProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -107,7 +114,7 @@ class StudentsProfile(models.Model):
     college = models.CharField(max_length=255 ,null=True, blank=True)
     address = models.CharField(max_length=255 ,null=True, blank=True)
     bio = models.CharField(max_length=255 ,null=True, blank=True)
-    profile_pic = models.ImageField(upload_to='student_profilePic/', null=True, blank=True)
+    profile_pic = models.ImageField(upload_to='student_profilePic/', default="default_profile_pic.webp",null=True, blank=True)
     cover_pic = models.ImageField(upload_to='student_coverPic/', null=True, blank=True)
 
     class Meta:
@@ -172,7 +179,7 @@ class PostDB(models.Model):
 
 #=============================================================== File Database
 class FileDatabase(models.Model):
-    uploadFile = models.FileField(upload_to='uploaded_files/', null=True, blank=True)
+    uploadFile = models.FileField(upload_to='', null=True, blank=True)
     sessionId = models.IntegerField()
     postId = models.IntegerField()
 

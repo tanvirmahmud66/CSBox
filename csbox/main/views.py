@@ -537,6 +537,7 @@ def student_home(request):
     return render(request, "student/home.html", {
         "student": True,
         "all_session": all_sessions,
+        "student_profile": student,
     })
 
 
@@ -581,6 +582,7 @@ def student_single_course(request, session_name, pk):
     session_member = SessionMember.objects.filter(token=course_obj.token)
     all_post = PostDB.objects.filter(session=course_obj)
     verify_obj = Verification.objects.get(user=request.user)
+    student_profile = StudentsProfile.objects.get(user=request.user)
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -614,6 +616,7 @@ def student_single_course(request, session_name, pk):
             return redirect("student_single_course", session_name, pk)
     return render(request, 'student/single_course.html', {
         "student": True,
+        "student_profile": student_profile,
         "course_obj": course_obj,
         "session_member": session_member,
         "posts": all_post,
@@ -633,3 +636,4 @@ def single_post(request, post_id):
     return render(request, 'single_post.html', {
         "post": target_post,
     })
+
