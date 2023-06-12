@@ -40,9 +40,7 @@ def signin(request):
                     user = authenticate(username=username, password=password)
                     if user is not None:
                         login(request, user)
-                        return render(request, "student/home.html",{
-                            "student": True,
-                        })
+                        return redirect('student_home')
                     else:
                         messages.info(request, invalid)
                         return redirect('signin')
@@ -106,7 +104,7 @@ def courses(request):
 def single_course(request, session_name,pk):
     verify_user = Verification.objects.get(user=request.user)
     if verify_user.is_teacher:
-        return redirect('fuculty_single_course', session_name,pk)
+        return redirect('faculty_single_course', session_name,pk)
     else:
         return redirect('student_single_course', session_name,pk)
 
@@ -122,6 +120,8 @@ def generate_token(length):
         return token
     else:
         generate_token(5)
+
+
 
 
 #======================================================== Registration (Teacher)
@@ -354,7 +354,6 @@ def faculty_single_course(request, session_name,pk):
             announcement = True
         else:
             announcement = False
-        print(postbody, files, is_announcement)
         if verify_obj.is_teacher:
             new_post = PostDB.objects.create(
                 session = course_obj,
@@ -363,6 +362,8 @@ def faculty_single_course(request, session_name,pk):
                 is_announcement=announcement,
                 postBody = postbody,
             )
+            if len(files)>0:
+                new_post.has_file = True
             new_post.save()
             for file in files:
                 file_upload = FileDatabase.objects.create(
@@ -371,7 +372,9 @@ def faculty_single_course(request, session_name,pk):
                     postId=new_post.id
                 )
                 file_upload.save()
-            return redirect("fuculty_single_course", session_name, pk)
+            return redirect("faculty_single_course", session_name, pk)
+    # for f in all_files:
+    #     print(f.uploadFile)    
     return render(request, 'teacher/single_course.html', {
         "teacher_profile": teacher_profile,
         "course_obj": course_obj,
@@ -384,9 +387,15 @@ def faculty_single_course(request, session_name,pk):
 def faculty_del_post(request, session_name, session_id, pk):
     del_post = PostDB.objects.get(id=pk)
     del_post.delete()
-    return redirect("fuculty_single_course", session_name, session_id)
+    return redirect("faculty_single_course", session_name, session_id)
 
-
+#------------------------- file remove -------------------------- file remove
+def file_remove(request, session_id,file_id):
+    target_file = FileDatabase.objects.get(id=file_id)
+    target_file.delete()
+    session = SessionData.objects.get(id=session_id)
+    print(session)
+    return redirect("faculty_single_course", session.sessionName,session.id)
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Registration (student)

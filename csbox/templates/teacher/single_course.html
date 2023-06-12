@@ -78,9 +78,23 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <div class="other_info_details">
                 <div id="Repo_section" class="repo_section">
-                    {%for file in files%}
-                        <div>{{file}}</div>
-                    {%endfor%}
+                    {%if files%}
+                    <ul>
+                        {%for file in files%}
+                        <li class="item">
+                            <a class="item-file" href="{{file.uploadFile.url}}" target="_blank">{{file}}</a>
+                            <div class="file_btns">
+                                <a style="color: rgb(1, 119, 228); text-decoration: none;" href="{{file.uploadFile.url}}" download>Download</a>
+                                <a style="color: red; text-decoration: none;" onclick="alert('Are you sure to delete file?')" href="{%url 'remove_file' course_obj.id file.id%}">Remove</a>
+                            </div>
+                        </li>
+                        {%endfor%}
+                    </ul>
+                    {%else%}
+                    <h3 class="empty">Empty Repository</h3>
+                    {%endif%}
+                    
+                    
                 </div>
                 <div id="Member_section" class="member_section">
                     <ul>
@@ -110,10 +124,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="post-body">
                         <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
                     </div>
-                    <div class="files">
+                    {%if post.has_file%}
+                    <button id="expand" class="expand">Expand Uploaded File</button>
+                    {%endif%}
+                    <div id="post_upFile" class="files">
                         {%for file in files%}
                             {%if file.postId == post.id%}
-                                <p>{{file.uploadFile}}</p>
+                                <div class="each">
+                                    <a>{{file}}</a>
+                                    <a style="margin-left:.6rem; font-size: .85rem; color:rgb(53, 53, 250);" href="{{file.uploadFile.url}}" target="_blank">Open</a>
+                                </div>
                             {%endif%}
                         {%endfor%}
                     </div>

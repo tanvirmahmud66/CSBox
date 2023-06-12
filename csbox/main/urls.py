@@ -28,12 +28,15 @@ urlpatterns = [
     path('student/courses/', views.student_courses, name='student_courses'),
 
     path('single_course/<str:session_name>-<int:pk>/', views.single_course, name='single_course'),
-    path('faculty/courses/<str:session_name>-<int:pk>/', views.faculty_single_course, name='fuculty_single_course'),
+    path('faculty/courses/<str:session_name>-<int:pk>/', views.faculty_single_course, name='faculty_single_course'),
     path('student/courses/<str:session_name>-<int:pk>/', views.student_single_course, name='student_single_course'),
 
     # CRUD operation
     path('faculty/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.faculty_del_post, name='faculty-del-post'),
     path('student/delete-post/<str:session_name>-<int:session_id>/<int:pk>/', views.student_del_post, name='student-del-post'),
+
+    # file remove
+    path('files/remove/<int:session_id>/<int:file_id>/', views.file_remove, name='remove_file'),
 
     #home single post section
     path('home/single_post/<int:post_id>/', views.single_post, name='single_post'),

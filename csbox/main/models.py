@@ -165,6 +165,7 @@ class PostDB(models.Model):
     is_student = models.BooleanField(default=False)
     is_announcement = models.BooleanField(null=True, blank=True)
     postBody = models.TextField()
+    has_file = models.BooleanField(default=False, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

@@ -21,6 +21,17 @@ document.getElementById("closeButton").addEventListener("click", function() {
 });
 
 
+document.getElementById("expand").addEventListener("click", function(){
+  if (document.getElementById("post_upFile").style.display != "block"){
+    document.getElementById("post_upFile").style.display = "block";
+    document.getElementById("expand").innerText = "Hide Uploaded File";
+  }else{
+    document.getElementById("post_upFile").style.display = "none";
+    document.getElementById("expand").innerText = "Expand Uploaded File";
+  }
+});
+
+
 const fileInput = document.getElementById('file-input');
 const fileList = document.querySelector('.file-list');
 

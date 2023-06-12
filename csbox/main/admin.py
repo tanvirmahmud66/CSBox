@@ -41,7 +41,7 @@ class SessionMemberView(admin.ModelAdmin):
 
 
 class PostDBView(admin.ModelAdmin):
-    list_display = ('session', 'creator', 'postBody', 'is_teacher', 'is_student', 'is_announcement', 'created', 'updated')
+    list_display = ('session', 'creator', 'postBody', 'is_teacher', 'is_student', 'is_announcement', 'has_file', 'created', 'updated')
 
 
 class CommentDBView(admin.ModelAdmin):
