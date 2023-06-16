@@ -132,6 +132,9 @@
                 </div>
             </div>
             <div class="courses-content">
+                {%if empty%}
+                    <div class="empty_session">Empty Session</div>
+                {%else%}
                 <div class="content-wrapper">
                     {%for session in all_session%}
                     <a href="{%url 'single_course' session.sessionName session.id%}">
@@ -146,6 +149,7 @@
                     </a>
                     {%endfor%}
                 </div>
+                {%endif%}
             </div>
         </div>
     </div>

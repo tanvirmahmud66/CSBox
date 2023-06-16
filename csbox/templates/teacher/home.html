@@ -26,6 +26,7 @@
         <h1 class="announcement-head">Announcement</h1>
         <div class="announcement">
             <div class="announcement-content">
+                {%if announcement%}
                 <ul class="list">
                     {%for each in announcement%}
                         <a class="each_list_link" href="{%url 'single_post' each.id %}">
@@ -37,23 +38,31 @@
 
                     {%endfor%}
                 </ul>
+                {%else%}
+                    <div class="no_announc">No Announcement Yet</div>
+                {%endif%}
+                
             </div>
         </div>
         <div class="post_section">
             <div class="post-content">
-                {%for each in normal_posts%}
-                    <a href="{%url 'single_post' each.id%}">
-                        <div class="post-card">
-                            <div class="post-head">
-                                <span class="bold">{{each.creator.first_name}} {{each.creator.last_name}}</span> 
-                                post to
-                                <span class="bold">{{each.session.sessionName}}</span>
-                                batch
-                                <span class="bold">{{each.session.section.batch}} - {{each.session.section.section}}, {{each.session.semester}}</span>
+                {%if normal_posts%}
+                    {%for each in normal_posts%}
+                        <a href="{%url 'single_post' each.id%}">
+                            <div class="post-card">
+                                <div class="post-head">
+                                    <span class="bold">{{each.creator.first_name}} {{each.creator.last_name}}</span> 
+                                    post to
+                                    <span class="bold">{{each.session.sessionName}}</span>
+                                    batch
+                                    <span class="bold">{{each.session.section.batch}} - {{each.session.section.section}}, {{each.session.semester}}</span>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                {%endfor%}
+                        </a>
+                    {%endfor%}
+                {%else%}
+                    <div class="no_post">No Recent Post</div>
+                {%endif%}
             </div>
         </div>
     </div>

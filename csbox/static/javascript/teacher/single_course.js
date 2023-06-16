@@ -21,13 +21,15 @@ document.getElementById("closeButton").addEventListener("click", function() {
 });
 
 
-document.getElementById("expand").addEventListener("click", function(){
-  if (document.getElementById("post_upFile").style.display != "block"){
-    document.getElementById("post_upFile").style.display = "block";
-    document.getElementById("expand").innerText = "Hide Uploaded File";
+document.getElementsByClassName("expand").addEventListener("click", function(){
+  if (document.getElementsByClassName("post_upFile").style.display != "block"){
+    document.getElementsByClassName("post_upFile").style.display = "block";
+    document.getElementsByClassName("expand").innerText = "Hide Uploaded File";
+    console.log("block")
   }else{
-    document.getElementById("post_upFile").style.display = "none";
-    document.getElementById("expand").innerText = "Expand Uploaded File";
+    document.getElementsByClassName("post_upFile").style.display = "none";
+    document.getElementsByClassName("expand").innerText = "Expand Uploaded File";
+    console.log("none")
   }
 });
 

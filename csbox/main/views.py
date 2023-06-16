@@ -266,6 +266,7 @@ def teacher_profile(request):
 #================================================================== Teacher Courses
 @login_required(login_url='signin')
 def teacher_courses(request):
+    empty = False
     if request.method=="POST":
         sessionName = request.POST['sessionName']
         sec = request.POST['section']
@@ -297,6 +298,10 @@ def teacher_courses(request):
             faculty__user=request.user,
             semester=q
         )
+        if all_session.exists():
+            empty = False
+        else:
+            empty = True
         sem = Semester.objects.get(id=q)
         teacher_profile = TeacherProfile.objects.get(user=request.user)
         return render(request, 'teacher/all_courses.html', {
@@ -304,6 +309,7 @@ def teacher_courses(request):
             "departments": departments,
             "batches": batches, 
             "semesters": semesters,
+            "empty": empty,
             "all_session": all_session.order_by('semester'),
             "q": sem
         })
@@ -318,6 +324,7 @@ def teacher_courses(request):
         "departments": departments,
         "batches": batches, 
         "semesters": semesters,
+        "empty": empty,
         "all_session": all_session.order_by('semester'),
         "q": semesters[0]
     })
@@ -333,6 +340,11 @@ def faculty_single_course(request, session_name,pk):
     all_files = FileDatabase.objects.filter(sessionId=pk)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
     session_member = SessionMember.objects.filter(token=course_obj.token)
+    print(all_post)
+    if len(all_post)==0:
+        empty=True
+    else:
+        empty=False
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -373,12 +385,11 @@ def faculty_single_course(request, session_name,pk):
                 )
                 file_upload.save()
             return redirect("faculty_single_course", session_name, pk)
-    # for f in all_files:
-    #     print(f.uploadFile)    
     return render(request, 'teacher/single_course.html', {
         "teacher_profile": teacher_profile,
         "course_obj": course_obj,
         "posts": all_post,
+        "empty":empty,
         "session_member": session_member,
         "files": all_files,
     })

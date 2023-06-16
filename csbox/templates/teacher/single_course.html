@@ -105,8 +105,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
         </div>
+
         <div class="post_section">
             <button id="popupButton" class="post_btn"><i class="fas fa-plus"></i> Create Post or Announcement</button>
+            {%if empty%}
+            <div class="empty_post">Empty Course Timeline</div>
+            {%else%}
             <div class="post_wraper">
                 {%for post in posts%}
                 <div {%if post.is_announcement%} class="post-card-red"{%else%} class="post-card"{%endif%}>
@@ -207,6 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
                 {%endfor%}
             </div>
+            {%endif%}
         </div>
     </div>
 
