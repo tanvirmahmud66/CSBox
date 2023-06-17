@@ -12,25 +12,14 @@ document.getElementById("member_button").addEventListener("click", function() {
     document.querySelector("#member_button").classList.add('active');
 });
 
+
+
 document.getElementById("popupButton").addEventListener("click", function() {
     document.getElementById("popupContainer").style.display = "block";
 });
 
 document.getElementById("closeButton").addEventListener("click", function() {
     document.getElementById("popupContainer").style.display = "none";
-});
-
-
-document.getElementsByClassName("expand").addEventListener("click", function(){
-  if (document.getElementsByClassName("post_upFile").style.display != "block"){
-    document.getElementsByClassName("post_upFile").style.display = "block";
-    document.getElementsByClassName("expand").innerText = "Hide Uploaded File";
-    console.log("block")
-  }else{
-    document.getElementsByClassName("post_upFile").style.display = "none";
-    document.getElementsByClassName("expand").innerText = "Expand Uploaded File";
-    console.log("none")
-  }
 });
 
 
@@ -49,9 +38,6 @@ function handleFileSelect(event) {
 }
 
 
-// document.querySelector(".post-deleteBtn").addEventListener("click", function() {
-//   document.querySelector(".post-delPopup").style.display = "block";
-// });
 
 function edit(){
   var editButton = document.getElementsByClassName("post-editBtn");
@@ -98,12 +84,30 @@ function del(){
       });
     });
   });
-
-
-
-
 }
-
-
-
+  function remove(){
+    console.log("hello from remove")
+    var delButtons = document.getElementsByClassName("remove-member");
+    console.log(delButtons)
+    Array.from(delButtons).forEach(function(button){
+      button.addEventListener("click", function(event){
+        event.stopPropagation();
+        var popID = button.getAttribute("data-popup");
+        console.log(popID)
+        var targetPop = document.getElementById(popID);
+        console.log(targetPop)
+        targetPop.style.display = "block";
+  
+        var closebtn = document.getElementsByClassName("popclose");
+        Array.from(closebtn).forEach(function(sec){
+          sec.addEventListener("click", function(event){
+            event.stopPropagation();
+            var Id = sec.getAttribute("data-popup");
+            tar = document.getElementById(Id)
+            tar.style.display = "none";
+          });
+        });
+      });
+    });
+  }
 

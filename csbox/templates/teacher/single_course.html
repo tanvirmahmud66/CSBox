@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <div class="other_info">
             <div class="other_info_header">
                 <button id="repo_button" class="other_info_btn active">Repository</button>
-                <button id="member_button" class="other_info_btn ">Course Member</button>
+                <button id="member_button" onclick="remove()" class="other_info_btn ">Course Member</button>
             </div>
             <div class="other_info_details">
                 <div id="Repo_section" class="repo_section">
@@ -106,8 +106,18 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <p>{{each.member.user.first_name}} {{each.member.user.last_name}}</p>
                                 </div>
                                 <div class="group2">
-                                    <a href="#">Profile</a>
-                                    <button>remove</button>
+                                    <a href="{%url 'visit_profile' each.member.user%}">Profile</a>
+                                    <button class="remove-member" data-popup="m{{each.member.user.id}}">Remove</button>
+                                </div>
+                                <div class="remove_memberPopup" id="m{{each.member.user.id}}">
+                                    <div class="rm_memberContainer">
+                                        <p>Are you sure to remove <span style="color: blue;" class="bold"> {{each.member.user.first_name}} {{each.member.user.last_name}} </span> from Session?</p>
+                                        <div class="grp">
+                                            <button class="popclose" data-popup="m{{each.member.user.id}}">No</button>
+                                            <a class="yes" href="#">Yes</a>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                             </li>
                         {%endfor%}
@@ -115,6 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
         </div>
+
+        
 
         <div class="post_section">
             <button id="popupButton" class="post_btn"><i class="fas fa-plus"></i> Create Post or Announcement</button>
@@ -139,8 +151,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
                     </div>
                     {%if post.has_file%}
-                    <button id="expand" class="expand">Expand Uploaded File</button>
-                    {%endif%}
                     <div id="post_upFile" class="files">
                         {%for file in files%}
                             {%if file.postId == post.id%}
@@ -151,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             {%endif%}
                         {%endfor%}
                     </div>
+                    {%endif%}
                     <div class="comment-section"></div>
                     
                     <!-- toggle 3 dots button -->

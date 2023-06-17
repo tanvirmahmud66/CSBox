@@ -1,0 +1,96 @@
+{%extends 'layout.html'%}
+
+{%load static%}
+
+{%block title%}
+    {{profile.user.first_name}} {{profile.user.last_name}} | CSBox - Educational Platform
+{%endblock title%}
+
+{%block link%} 
+    <link rel="stylesheet" href="{%static 'css/profile.css'%}"/>
+{%endblock link%}
+{%block navImg%}
+    {%if teacher_profile.profile_pic%}
+        <img src="{{teacher_profile.profile_pic.url}}" alt="Profile Pic">
+    {%else%}
+        <img src="../../media/default_profile_pic.webp" alt="Profile pic">
+    {%endif%}
+{%endblock navImg%}
+
+{%block script%}{%endblock script%}
+
+{%block content%}
+<div class="wraper">
+    <div class="cover_photo">
+        {%if profile.cover_pic%}
+            <img src="{{profile.cover_pic.url}}" alt="Cover photo">
+        {%else%}
+            <div class="no_cover">
+                No Cover Photo
+            </div>
+        {%endif%}
+    </div>
+    <div class="profile_head">
+        <div class="profile_avatar">
+            {%if profile.profile_pic%}
+                <img src="{{profile.profile_pic.url}}" alt="Profile pic">
+            {%endif%}
+        </div>
+        <div class="profile_naming">
+            <h3>{{profile.user.first_name}} {{profile.user.last_name}}</h3>
+            {%if profile.bio%}
+            <p>{{profile.bio}}</p>
+            {%endif%}
+        </div>
+    </div>
+    <div class="personal_info">
+
+        {%if profile.works_at%}
+        <p class="each"><span class="bold">Works at: </span>{{profile.works_at}}</p>
+        {%endif%}
+
+        {%if profile.department%}
+        <p class="each"><span class="bold">Department: </span>{{profile.department}}</p>
+        {%endif%}
+
+        {%if profile.batch%}
+        <p class="each"><span class="bold">Batch: </span>{{profile.batch.batch}}</p>
+        {%endif%}
+
+        {%if profile.section%}
+        <p class="each"><span class="bold">Section: </span>{{profile.section}}</p>
+        {%endif%}
+
+        {%if profile.student_id%}
+        <p class="each"><span class="bold">Student ID: </span>{{profile.student_id}}</p>
+        {%endif%}
+
+        {%if profile.school%}
+        <p class="each"><span class="bold">School: </span>{{profile.school}}</p>
+        {%endif%}
+
+        {%if profile.college%}
+        <p class="each"><span class="bold">College: </span>{{profile.college}}</p>
+        {%endif%}
+
+        {%if profile.designation%}
+        <p class="each"><span class="bold">Designation: </span>{{profile.designation}}</p>
+        {%endif%}
+
+        {%if profile.studied_at%}
+        <p class="each"><span class="bold">Studied at: </span>{{profile.studied_at}}</p>
+        {%endif%}
+
+        {%if profile.program%}
+        <p class="each"><span class="bold">Program: </span>{{profile.program}}</p>
+        {%endif%}
+
+        {%if profile.address%}
+        <p class="each"><span class="bold">From: </span>{{profile.address}}</p>
+        {%endif%}
+
+        <a class="back-btn" href="{{request.META.HTTP_REFERER}}">Back to Session</a>
+    </div>
+</div>
+    
+{%endblock content%}

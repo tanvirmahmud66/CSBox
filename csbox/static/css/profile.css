@@ -1,0 +1,92 @@
+.wraper{
+    width: 100%;
+    height: 93vh;
+}
+
+.cover_photo{
+    width: 100%;
+    height: 27%;
+    overflow: hidden;
+    position: relative;
+}
+.cover_photo img{
+    width: 100%;
+}
+.cover_photo .no_cover{
+    width: 100%;
+    height: 100%;
+    background-color: gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: rgba(169, 169, 169, 0.718);
+}
+.profile_head{
+    position: absolute;
+    top: 190px;
+    left: 210px;
+    width: 700px;
+    display: flex;
+    align-items: flex-end;
+}
+.profile_avatar{
+    width:170px;
+    height: 170px;
+    background-color: rgb(75, 75, 75);
+    border: 5px solid rgba(200, 200, 200, 0.786);
+    border-radius: 50%;
+    margin-right: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.profile_avatar img{
+    width: 100%;
+}
+.profile_naming h3{
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+.profile_naming p{
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.457);
+    margin-top: 1.1rem;
+}
+
+.personal_info{
+    width: 63%;
+    position: absolute;
+    top: 400px;
+    left: 430px;
+}
+.each{
+    margin:1.2rem 0; 
+}
+.bold{
+    font-weight: bold;
+}
+.edit-btn{
+    padding:.7rem;
+    border-radius: 5px;
+    background-color: #10B0A7;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.back-btn{
+    text-decoration: none;
+    padding:.5rem;
+    margin-top: 15px;
+    background-color: #10B0A7;
+    font-size: .9rem;
+    border-radius: 5px;
+    color: white;
+}
+
+
+
+  

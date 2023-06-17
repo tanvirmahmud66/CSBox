@@ -89,6 +89,23 @@ def check_profile(request):
 
 
 
+#---------------------------------------------------------- Visit profile
+def visit_profile(request,pk):
+    target_user = User.objects.get(username=pk)
+    print(f"target_user = {target_user}")
+    verify_check = Verification.objects.get(user=target_user)
+    print(f"verify_check = {verify_check}")
+    if verify_check.is_teacher:
+        profile = TeacherProfile.objects.get(user=target_user)
+        print(f"profile = {profile}")
+    else:
+        profile = StudentsProfile.objects.get(user=target_user)
+        print(f"profile = {profile}")
+    return render(request, 'profile.html',{
+        "profile": profile,
+    })
+
+
 #----------------------------------------------------------- Courses
 @login_required(login_url='signin')
 def courses(request):

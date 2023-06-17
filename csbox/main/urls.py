@@ -19,6 +19,7 @@ urlpatterns = [
     path('student/home/', views.student_home, name='student_home'),
 
     # profile page
+    path('visit/profile/<str:pk>/', views.visit_profile, name='visit_profile'),
     path('check_profile/', views.check_profile, name='check_profile'),
     path('faculty/profile/', views.teacher_profile, name='teacher_profile'),
     path('student/profile/', views.student_profile, name='student_profile'),
