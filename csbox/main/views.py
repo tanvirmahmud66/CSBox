@@ -340,7 +340,9 @@ def faculty_single_course(request, session_name,pk):
     all_files = FileDatabase.objects.filter(sessionId=pk)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
     session_member = SessionMember.objects.filter(token=course_obj.token)
-    print(all_post)
+    print(session_member)
+    if session_member:
+        print("session memeber true")
     if len(all_post)==0:
         empty=True
     else:

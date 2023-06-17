@@ -154,7 +154,7 @@ class SessionMember(models.Model):
         verbose_name_plural = 'Session Member'
     
     def __str__(self):
-        return f"{self.session} {self.member}"
+        return f"{self.member}"
 
 
 #============================================================== Post Database

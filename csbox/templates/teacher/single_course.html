@@ -93,13 +93,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     {%else%}
                     <h3 class="empty">Empty Repository</h3>
                     {%endif%}
-                    
-                    
                 </div>
+
                 <div id="Member_section" class="member_section">
                     <ul>
                         {%for each in session_member%}
-                            <li class="item">{{each.member.user.first_name}} {{each.member.user.last_name}}</li>
+                            <li class="item">
+                                <div class="group">
+                                    <div class="avater">
+                                        <img class="pp" src="{{each.member.profile_pic.url}}" alt="avater">
+                                    </div>
+                                    <p>{{each.member.user.first_name}} {{each.member.user.last_name}}</p>
+                                </div>
+                                <div class="group2">
+                                    <a href="#">Profile</a>
+                                    <button>remove</button>
+                                </div>
+                            </li>
                         {%endfor%}
                     </ul>
                 </div>
