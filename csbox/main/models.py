@@ -195,6 +195,7 @@ class FileDatabase(models.Model):
 #================================================================ Post's Comment Database
 class CommentDB(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE)
+    session = models.ForeignKey(SessionData, on_delete=models.CASCADE, blank=True, null=True)
     postId = models.ForeignKey(PostDB, on_delete=models.CASCADE)
     commentBody = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

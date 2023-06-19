@@ -2,6 +2,10 @@
 
 {%load static%}
 {% load humanize %}
+{% load custom_filters %}
+
+
+
 {%block title%}
     {{course_obj.sessionName}} | CSBox - Educational Platform
 {%endblock title%}
@@ -55,7 +59,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
 </script>
+
 {%endblock script%}
 
 {%block content%}
@@ -145,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <span class="bold">{{post.session.batch}}-{{post.session.section.section}}</span>
                             <span class="tiny"> - {{post.session.semester}}</span>
                         </h2>
-                        <p class="time">{{post.created | timesince}} ago</p>  
+                        <p class="time">{{post.created | format_time}} ago</p>  
                     </div>
                     <div class="post-body">
                         <h2 class="{%if post.postBody|length < 100%}body-text-normal{%else%}body-text-small{%endif%}">{{post.postBody}}</h2>
@@ -162,7 +168,41 @@ document.addEventListener("DOMContentLoaded", function() {
                         {%endfor%}
                     </div>
                     {%endif%}
-                    <div class="comment-section"></div>
+                    <div class="comment-section">
+                        <form class="form_wraper" action="{%url 'post_comment' post.id%}" method="POST" >
+                            {%csrf_token%}
+                            <input type="text" name="comment" class="comment" id="comment" placeholder="Write your comment here..." required>
+                            <input type="submit" class="submit" value="Add Comment">
+                        </form>
+                        <div class="all_comment">
+                            <ul>
+                                {%for comment in comments%}
+                                {%if post.id == comment.postId.id %}
+                                <li class="single_comment">
+                                    <div class="comment_wraper">
+                                        <div class="avater">
+                                            {%for cmnt_profile in commenter_profile%}
+                                                {%if cmnt_profile.user == comment.commenter%}
+                                                    {%if cmnt_profile.profile_pic%}
+                                                        <img class="p" src="{{cmnt_profile.profile_pic.url}}" alt="avater">
+                                                    {%endif%}
+                                                {%endif%}
+                                            {%endfor%}
+                                        </div>
+                                        <div>
+                                            <div class="comment_body">
+                                                <p class="commenter">{{comment.commenter.first_name}} {{comment.commenter.last_name}}</p>
+                                                <p class="body">{{comment.commentBody}}</p>
+                                            </div>
+                                            <p class="time">{{comment.created|format_time}} ago</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {%endif%}
+                                {%endfor%}
+                            </ul>
+                        </div>
+                    </div>
                     
                     <!-- toggle 3 dots button -->
                     {%if post.creator == request.user%}

@@ -41,4 +41,7 @@ urlpatterns = [
 
     #home single post section
     path('home/single_post/<int:post_id>/', views.single_post, name='single_post'),
+
+    #comment
+    path('comment/<int:post_id>/', views.post_comment, name='post_comment'),
 ]

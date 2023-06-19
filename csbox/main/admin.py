@@ -45,7 +45,7 @@ class PostDBView(admin.ModelAdmin):
 
 
 class CommentDBView(admin.ModelAdmin):
-    list_display = ('commenter', 'postId', 'commentBody', 'created')
+    list_display = ('commenter','session','postId', 'commentBody', 'created')
 
 
 class FileDatabaseView(admin.ModelAdmin):

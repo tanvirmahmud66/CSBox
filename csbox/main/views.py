@@ -1,6 +1,7 @@
 import uuid
 import secrets
 import string
+import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
@@ -139,7 +140,20 @@ def generate_token(length):
         generate_token(5)
 
 
-
+#------------------------- commenting --------------------------- 
+def post_comment(request, post_id):
+    get_post = PostDB.objects.get(id=post_id)
+    get_session = SessionData.objects.get(id=get_post.session.id)
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        new_comment = CommentDB.objects.create(
+            session=get_session,
+            postId=get_post,
+            commenter=request.user,
+            commentBody=comment
+        )
+        new_comment.save()
+        return redirect('single_course', get_session.sessionName, get_session.id)
 
 #======================================================== Registration (Teacher)
 
@@ -355,15 +369,23 @@ def faculty_single_course(request, session_name,pk):
     verify_obj = Verification.objects.get(user=request.user)
     all_post = PostDB.objects.filter(session=course_obj)
     all_files = FileDatabase.objects.filter(sessionId=pk)
+    all_comment = CommentDB.objects.filter(session=course_obj.id)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
     session_member = SessionMember.objects.filter(token=course_obj.token)
-    print(session_member)
-    if session_member:
-        print("session memeber true")
+    current_time = datetime.datetime.now()
+    print(all_comment)
+    commenter_profile = []
+    for each in all_comment:
+        check_profile = Verification.objects.get(user=each.commenter)
+        if check_profile.is_student:
+            commenter_profile.append(StudentsProfile.objects.get(user=each.commenter))
+        elif check_profile.is_teacher:
+            commenter_profile.append(TeacherProfile.objects.get(user=each.commenter))
     if len(all_post)==0:
         empty=True
     else:
         empty=False
+
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -378,7 +400,7 @@ def faculty_single_course(request, session_name,pk):
             print(e)
         
     if request.method == "POST":
-        postbody = request.POST['post_content']
+        postbody = request.POST.get('post_content')
         files = request.FILES.getlist('files')
         is_announcement = request.POST.get("announcement")
         if is_announcement=="True":
@@ -410,7 +432,10 @@ def faculty_single_course(request, session_name,pk):
         "posts": all_post,
         "empty":empty,
         "session_member": session_member,
+        "comments": all_comment,
+        "commenter_profile": commenter_profile,
         "files": all_files,
+        "current_time":current_time,
     })
 
 #------------ faculty delete post -------------
