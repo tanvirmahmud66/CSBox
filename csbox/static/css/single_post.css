@@ -1,31 +1,33 @@
 .wraper{
-    height: 93vh;
+    height: auto;
     overflow: scroll;
     display: flex;
     justify-content: center;
-    align-items: center;
+    overflow: scroll;
+    position: relative;
 }
 
 .post-card{
     width: 70%;
+    height: auto;
     padding: 2rem 0;
-    margin: 1.5rem 0;
+    margin: 3rem 0;
     padding: 10px;
-    border: 3px solid black;
+    border: 2px solid black;
     border-radius: 10px;
-    position: relative;
 }
 .post-card-red{
     width: 70%;
+    height: auto;
     padding: 2rem 0;
     margin: 3rem 0;
     padding: 10px;
     border: 3px solid rgb(248, 65, 65);
     border-radius: 10px;
-    position: relative;
+    
 }
 .back-url{
-    position: absolute;
+    position: fixed;
     top: 100px;
     left: 120px;
 }
@@ -45,6 +47,12 @@
     font-size: 1.1rem;
     font-weight: 300;
 }
+.time{
+    color: rgb(66, 103, 255);
+    font-size: .8rem;
+    margin-left: .7rem;
+}
+
 .post-body{
     padding: 1rem 0;
     width: 95%;
@@ -58,4 +66,91 @@
     font-size: 1.15rem;
     font-weight: 300;
     line-height: 1.9rem;
+}
+
+.files{
+    width: 100%;
+}
+.files .each{
+    background-color: rgba(209, 209, 209, 0.848);
+    color: #008efb;
+    padding: .6rem .5rem;
+    border-radius: 5px;
+    margin-bottom: .7rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.each a{
+    text-decoration: none;
+    color: black;
+}
+
+.comment-section{
+    border-top: 1px solid black;
+}
+.comment-section .form_wraper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+.form_wraper .comment{
+    width: 80%;
+    padding: .5rem;
+    font-size: 1rem;
+}
+.form_wraper .submit{
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    padding: .5rem 1rem;
+    border-radius: 2px;
+    background-color: #008efb;
+    color: white;
+    cursor: pointer;
+}
+.all_comment{
+    margin-top: 1rem;
+}
+.all_comment ul{
+    list-style-type: none;
+}
+.single_comment{
+    margin: .8rem 0 1.4rem 0;
+}
+.single_comment .comment_wraper{
+    display: flex;
+}
+.avater{
+    width: 33px;
+    height: 33px;
+    border:1px solid gray;
+    border-radius: 50%;
+    margin-right: 3px;
+    overflow: hidden;
+    background-color: gray;
+}
+.p{width: 100%;}
+.comment_body{
+    margin-left: .3rem;
+    margin-bottom: .3rem;
+    height: auto;
+    width: auto;
+    padding: .5rem;
+    background-color: rgba(10, 24, 54, 0.725);
+    border-radius: 13px;
+    color: rgb(222, 222, 222);
+}
+.commenter{
+    font-size: .97rem;
+    color: rgb(238, 246, 255);
+    margin-bottom: .35rem;
+}
+.body{
+    font-size: .9rem;
+    font-weight: 200;
+    color:rgb(226, 226, 226);
+    line-height: 1.2rem;
 }

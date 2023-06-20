@@ -211,7 +211,7 @@ def teacher_registration(request):
                     recipient_list,
                     fail_silently=False
                 )
-
+                print(link)
                 return render(request,'notification.html', {
                     "title": "Confirm Your Email",
                     "notification": "We have send an email to your email address for verify your registration process. Please check your email address.",
@@ -258,9 +258,20 @@ def teacher_verified(request, username, teacher_id, designation, dept_id, token)
 #================================================================== Teacher Home page
 @login_required(login_url='signin')
 def teacher_home(request):
-    normal_posts = PostDB.objects.filter(is_announcement=False)
-    announcement = PostDB.objects.filter(creator=request.user, is_announcement=True)
     teacher_profile = TeacherProfile.objects.get(user=request.user)
+    all_session = SessionData.objects.filter(faculty=teacher_profile)
+    all_post = []
+    for session in all_session:
+        posts = PostDB.objects.filter(session=session)
+        for post in posts:
+            all_post.append(post)
+    normal_posts = []
+    announcement = []
+    for each in all_post:
+        if each.is_announcement == False:
+            normal_posts.append(each)
+        else:
+            announcement.append(each)
     return render(request, "teacher/home.html",{
         "normal_posts": normal_posts,
         "announcement": announcement,
@@ -438,7 +449,7 @@ def faculty_single_course(request, session_name,pk):
         "current_time":current_time,
     })
 
-#------------ faculty delete post -------------
+#------------ faculty post delete ------------- post delete
 def faculty_del_post(request, session_name, session_id, pk):
     del_post = PostDB.objects.get(id=pk)
     del_post.delete()
@@ -451,6 +462,13 @@ def file_remove(request, session_id,file_id):
     session = SessionData.objects.get(id=session_id)
     print(session)
     return redirect("faculty_single_course", session.sessionName,session.id)
+
+#------------------------- Member remove ------------------------ Member remove
+def member_remove(request,sm_id):
+    session_member = SessionMember.objects.get(id=sm_id)
+    session = SessionData.objects.get(id=session_member.session.id)
+    session_member.delete()
+    return redirect("faculty_single_course",session.sessionName,session.id)
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Registration (student)
@@ -645,8 +663,17 @@ def student_single_course(request, session_name, pk):
     course_obj = SessionData.objects.get(id=pk)
     session_member = SessionMember.objects.filter(token=course_obj.token)
     all_post = PostDB.objects.filter(session=course_obj)
+    all_files = FileDatabase.objects.filter(sessionId=pk)
+    all_comment = CommentDB.objects.filter(session=course_obj.id)
     verify_obj = Verification.objects.get(user=request.user)
     student_profile = StudentsProfile.objects.get(user=request.user)
+    commenter_profile = []
+    for each in all_comment:
+        check_profile = Verification.objects.get(user=each.commenter)
+        if check_profile.is_student:
+            commenter_profile.append(StudentsProfile.objects.get(user=each.commenter))
+        elif check_profile.is_teacher:
+            commenter_profile.append(TeacherProfile.objects.get(user=each.commenter))
     if request.method=="GET":
         post_id_edit = request.GET.get('post_id')
         edit_post_body = request.GET.get('edit_post_content')
@@ -684,6 +711,9 @@ def student_single_course(request, session_name, pk):
         "course_obj": course_obj,
         "session_member": session_member,
         "posts": all_post,
+        "files": all_files,
+        "comments": all_comment,
+        "commenter_profile": commenter_profile,
     })
 
 
@@ -697,7 +727,19 @@ def student_del_post(request, session_name, session_id, pk):
 #@@@@@@@@@@@@@@@@@@@@@ single post page @@@@@@@@@@@@@@@@@@@@@@@@@@@
 def single_post(request, post_id):
     target_post = PostDB.objects.get(id=post_id)
+    post_files = FileDatabase.objects.filter(postId=post_id)
+    comments = CommentDB.objects.filter(postId=target_post)
+    commenter_profile = []
+    for each in comments:
+        check_profile = Verification.objects.get(user=each.commenter)
+        if check_profile.is_student:
+            commenter_profile.append(StudentsProfile.objects.get(user=each.commenter))
+        elif check_profile.is_teacher:
+            commenter_profile.append(TeacherProfile.objects.get(user=each.commenter))
     return render(request, 'single_post.html', {
         "post": target_post,
+        "files": post_files,
+        "comments": comments,
+        "commenter_profile": commenter_profile,
     })
 

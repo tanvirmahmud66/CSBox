@@ -11,9 +11,9 @@
     left: 0;
     width: 400px;
     height: 270px;
-    border: 2px solid #0A4D68;
+    background-color: #d4d4d4;
     border-radius: 10px;
-    padding: .5rem;
+    padding: .5rem .7rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -23,7 +23,6 @@
     height: 19%;
     font-size: 1.4rem;
     font-weight: 500;
-    color: black;
     overflow: hidden;
     border-bottom: 1px solid black;
     display: flex;
@@ -40,7 +39,6 @@
 }
 .bold{
     font-weight: 400;
-    color: black;
 }
 .token{
     background-color: rgba(255, 255, 0, 0.545);
@@ -274,7 +272,7 @@
     position: absolute;
     right: 0;
     width: 780px;
-    height:755px;
+    height:763px;
     overflow: scroll;
     padding-right: 1.5rem;
     padding-top: 20px;
@@ -311,16 +309,18 @@
 
 .post-card{
     width: 100%;
-    margin: 1.5rem 0;
+    margin: 1.8rem 0;
     padding: 10px;
-    border: 1.5px solid black;
+    /* border: 2px solid black; */
+    background-color: rgb(213, 213, 213);
     border-radius: 10px;
     position: relative;
 }
 .post-card-red{
     width: 100%;
-    margin: 1.5rem 0;
+    margin: 1.8rem 0;
     padding: 10px;
+    background-color: rgb(213, 213, 213);
     border: 3px solid rgb(248, 65, 65);
     border-radius: 10px;
     position: relative;
@@ -344,6 +344,7 @@
 .time{
     color: rgb(66, 103, 255);
     font-size: .8rem;
+    margin-left: .7rem;
 }
 .post-body{
     padding: 1rem 0;
@@ -364,7 +365,7 @@
     width: 100%;
 }
 .files .each{
-    background-color: rgba(209, 209, 209, 0.848);
+    background-color: rgba(122, 182, 222, 0.627);
     color: #008efb;
     padding: .6rem .5rem;
     border-radius: 5px;
@@ -392,14 +393,17 @@
     width: 80%;
     padding: .5rem;
     font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(240, 240, 240, 0.87);
 }
 .form_wraper .submit{
     text-decoration: none;
     font-size: 1rem;
     border: none;
     padding: .5rem 1rem;
-    border-radius: 2px;
-    background-color: #008efb;
+    border-radius: 5px;
+    background-color: #10B0A7;
     color: white;
     cursor: pointer;
 }
@@ -408,9 +412,10 @@
 }
 .all_comment ul{
     list-style-type: none;
+    padding-right: 1rem;
 }
 .single_comment{
-    margin: .8rem 0 1.4rem 0;
+    margin: .8rem 0;
 }
 .single_comment .comment_wraper{
     display: flex;
@@ -426,18 +431,19 @@
 }
 .comment_body{
     margin-left: .3rem;
-    margin-bottom: .3rem;
+    margin-bottom: .14rem;
     height: auto;
     width: auto;
-    padding: .5rem;
-    background-color: rgba(10, 24, 54, 0.725);
-    border-radius: 13px;
+    /* max-width: 96%; */
+    padding: .3rem .5rem;
+    background-color: rgba(57, 57, 57, 0.794);
+    border-radius: 11px;
     color: rgb(222, 222, 222);
 }
 .commenter{
     font-size: .97rem;
     color: rgb(238, 246, 255);
-    margin-bottom: .35rem;
+    margin-bottom: .2rem;
 }
 .body{
     font-size: .9rem;

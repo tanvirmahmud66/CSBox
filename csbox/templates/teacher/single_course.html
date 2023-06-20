@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <p>Are you sure to remove <span style="color: blue;" class="bold"> {{each.member.user.first_name}} {{each.member.user.last_name}} </span> from Session?</p>
                                         <div class="grp">
                                             <button class="popclose" data-popup="m{{each.member.user.id}}">No</button>
-                                            <a class="yes" href="#">Yes</a>
+                                            <a class="yes" href="{%url 'member_remove' each.id %}">Yes</a>
                                         </div>
                                         
                                     </div>

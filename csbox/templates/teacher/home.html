@@ -1,7 +1,7 @@
 {%extends 'layout.html'%}
 
 {%load static%}
-
+{% load custom_filters %}
 {%block title%}
     Home | CSBox - Educational Platform
 {%endblock title%}
@@ -57,6 +57,7 @@
                                     batch
                                     <span class="bold">{{each.session.section.batch}} - {{each.session.section.section}}, {{each.session.semester}}</span>
                                 </div>
+                                <p class="time">{{each.created | format_time}} ago</p>
                             </div>
                         </a>
                     {%endfor%}

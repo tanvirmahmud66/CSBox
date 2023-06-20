@@ -39,6 +39,9 @@ urlpatterns = [
     # file remove
     path('files/remove/<int:session_id>/<int:file_id>/', views.file_remove, name='remove_file'),
 
+    # member remove
+    path('member/remove/<int:sm_id>/', views.member_remove, name='member_remove'),
+
     #home single post section
     path('home/single_post/<int:post_id>/', views.single_post, name='single_post'),
 

@@ -10,28 +10,31 @@
     left: 10px;
     width: 22%;
     height: 94%;
+    border: 1.5px solid black;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 10px black;
 }
 .heading {
     position: absolute;
     width: 100%;
-    color: white;
+    color: #0a7a75;
     padding: 12px;
-    font-size: 1.3rem;
+    border-bottom: 1.5px solid black;
+    font-size: 1.5rem;
+    font-weight:bolder;
     text-align: center;
     font-weight: 300;
-    background-color: #0A4D68;
+    background-color: #fbfbfb;
 }
 .semester_content{
     height: 100%;
     overflow: scroll;
 }
 .list{
-    margin-top: 20%;
+    margin-top: 15%;
     height: 100%;
     list-style: none;
+    padding: 1rem;
 }
 
 .list_item{

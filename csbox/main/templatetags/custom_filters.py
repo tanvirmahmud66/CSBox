@@ -24,7 +24,7 @@ def format_time(value):
         return value.strftime('%Y-%m-%d')  # Show the created date if it's been 4 or more days
     elif hours >= 24:
         return f'{days} day{"s" if days != 1 else ""}'  # Show days when it's 1 day or more
-    elif minutes >= 60:
+    elif hours >= 1:
         return f'{hours} hour{"s" if hours != 1 else ""}'  # Show hours when it's 1 hour or more
     else:
         return f'{minutes} minute{"s" if minutes != 1 else ""}'  # Show minutes otherwise
